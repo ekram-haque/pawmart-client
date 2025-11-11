@@ -3,22 +3,22 @@ import { FaDog, FaBone, FaGift, FaCapsules } from "react-icons/fa";
 
 const categories = [
   {
-    icon: <FaDog size={50} className="text-purple-700" />,
+    icon: <FaDog size={50} className="text-purple-600 dark:text-purple-400" />,
     title: "Pets (Adoption)",
     desc: "Find your perfect furry companion and give them a loving home.",
   },
   {
-    icon: <FaBone size={50} className="text-pink-700" />,
+    icon: <FaBone size={50} className="text-pink-600 dark:text-pink-400" />,
     title: "Pet Food",
     desc: "Healthy and nutritious food for dogs, cats, and more!",
   },
   {
-    icon: <FaGift size={50} className="text-orange-600" />,
+    icon: <FaGift size={50} className="text-orange-500 dark:text-orange-400" />,
     title: "Accessories",
     desc: "Stylish collars, beds, and toys for your pets’ comfort.",
   },
   {
-    icon: <FaCapsules size={50} className="text-green-700" />,
+    icon: <FaCapsules size={50} className="text-green-600 dark:text-green-400" />,
     title: "Pet Care Products",
     desc: "Everything you need to keep your pet clean, safe, and healthy.",
   },
@@ -26,27 +26,31 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <div className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
+    <div className="py-20 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="max-w-6xl mx-auto text-center px-4">
-        <h2 className="text-4xl font-bold text-purple-800 mb-2">
-          Browse By Category
+        {/* Section Header */}
+        <h2 className="text-4xl font-bold text-purple-800 dark:text-pink-300 mb-3">
+          🐾 Browse By Category
         </h2>
-        <p className="text-gray-600 mb-10">
+        <p className="text-gray-600 dark:text-gray-300 mb-12">
           Choose from our wide range of pet essentials
         </p>
 
+        {/* Category Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((item, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition duration-300 transform hover:-translate-y-2"
+              className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-6 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition duration-300"
             >
               <div className="flex flex-col items-center text-center">
                 <div className="mb-4">{item.icon}</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                   {item.title}
                 </h3>
-                <p className="text-gray-600 text-sm">{item.desc}</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}

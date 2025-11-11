@@ -12,6 +12,7 @@
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
     "@tailwindcss/vite": "^4.1.17",
+    "firebase": "^12.5.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "lucide-react": "^0.553.0",

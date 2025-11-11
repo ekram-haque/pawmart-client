@@ -69,53 +69,61 @@ const PetsSuppliesPage = () => {
       : allListings.filter((item) => item.category === selectedCategory);
 
   return (
- <div className="bg-linear-to-r from-purple-50 to-pink-50">
-       <div className="py-12 px-4 max-w-6xl mx-auto ">
-      <h1 className="text-4xl font-bold text-purple-800 mb-8 text-center">
-        🐾 Pets & Supplies
-      </h1>
+    <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 min-h-screen transition-colors duration-300">
+      <div className="py-12 px-4 max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-purple-800 dark:text-purple-300 mb-8 text-center">
+          🐾 Pets & Supplies
+        </h1>
 
-      {/* Filters */}
-      <div className="flex justify-center gap-4 mb-8 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full font-semibold transition ${
-              selectedCategory === cat
-                ? "bg-purple-700 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-purple-100"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredListings.map((listing) => (
-          <div
-            key={listing.id}
-            className="bg-white rounded-xl shadow-md p-4 hover:shadow-xl transition"
-          >
-            <img
-              src={listing.image}
-              alt={listing.name}
-              className="w-full h-56 object-cover rounded-lg mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-1">{listing.name}</h3>
-            <p className="text-sm text-gray-600 mb-1">Category: {listing.category}</p>
-            <p className="text-sm text-gray-500 mb-1">📍 {listing.location}</p>
-            <p className="text-lg font-bold text-purple-700 mb-3">{listing.price}</p>
-            <button className="bg-linear-to-r from-purple-700 to-pink-600 text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition w-full">
-              See Details
+        {/* Filters */}
+        <div className="flex justify-center gap-4 mb-8 flex-wrap">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-4 py-2 rounded-full font-semibold transition ${
+                selectedCategory === cat
+                  ? "bg-purple-700 text-white dark:bg-purple-600 dark:text-white"
+                  : "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-purple-100 dark:hover:bg-purple-600"
+              }`}
+            >
+              {cat}
             </button>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredListings.map((listing) => (
+            <div
+              key={listing.id}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 hover:shadow-xl transition-colors duration-300"
+            >
+              <img
+                src={listing.image}
+                alt={listing.name}
+                className="w-full h-56 object-cover rounded-lg mb-4"
+              />
+              <h3 className="text-xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
+                {listing.name}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                Category: {listing.category}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                📍 {listing.location}
+              </p>
+              <p className="text-lg font-bold text-purple-700 dark:text-purple-300 mb-3">
+                {listing.price}
+              </p>
+              <button className="bg-gradient-to-r from-purple-700 to-pink-600 dark:from-purple-600 dark:to-pink-500 text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition w-full">
+                See Details
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
- </div>
   );
 };
 

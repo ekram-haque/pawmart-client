@@ -32,9 +32,9 @@ const blogPosts = [
 
 const OurBlog = () => {
   return (
-    <section className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
+    <section className="py-25 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900 mb-25 transition duration-300">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold text-purple-800 mb-12">
+        <h2 className="text-4xl font-bold text-purple-800 dark:text-purple-300 mb-12">
           📰 Our Blog
         </h2>
 
@@ -42,18 +42,24 @@ const OurBlog = () => {
           {blogPosts.map((post) => (
             <div
               key={post.id}
-              className="bg-white  rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1"
             >
               <img
                 src={post.image}
                 alt={post.title}
                 className="w-full h-56 object-cover"
               />
-              <div className="p-4">
-                <p className="text-sm text-gray-500 mb-2">{post.date}</p>
-                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                <p className="text-gray-700 text-sm">{post.excerpt}</p>
-                <button className="mt-4 bg-linear-to-r from-purple-700 to-pink-600 text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+              <div className="p-5">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  {post.date}
+                </p>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm">
+                  {post.excerpt}
+                </p>
+                <button className="mt-5 bg-gradient-to-r from-purple-700 to-pink-600 dark:from-purple-500 dark:to-pink-500 text-white px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">
                   Read More
                 </button>
               </div>

@@ -1,20 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router"; 
 
 const MyLink = ({ to, children, className }) => {
   return (
-    <div>
-      <NavLink
-        to={to}
-        className={({ isActive }) =>
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `px-3 py-1 rounded-md transition duration-300 ${
           isActive
-            ? "hover:underline hover:font-semibold underline font-semibold bg-linear-to-r from-purple-50 to-pink-50 px-2   "
-            : `${className} hover:font-semibold`
-        }
-      >
-        {children}
-      </NavLink>
-    </div>
+            ? "bg-linear-to-r from-purple-200 to-pink-200 dark:from-purple-600 dark:to-pink-600 text-gray-900 dark:text-white font-semibold"
+            : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400"
+        } ${className || ""}`
+      }
+    >
+      {children}
+    </NavLink>
   );
 };
 

@@ -59,8 +59,8 @@ const RecentListings = () => {
   ];
 
   return (
-    <section className="py-12 mb-25 ">
-      <h2 className="text-3xl font-bold text-center mb-8 text-black">
+    <section className="py-12 mb-25">
+      <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
         🐾 Recent Listings
       </h2>
 
@@ -68,23 +68,27 @@ const RecentListings = () => {
         {listings.map((listing) => (
           <div
             key={listing.id}
-            className="bg-linear-to-r from-purple-50 to-pink-50 rounded-xl shadow-lg p-4 hover:shadow-2xl transition duration-300"
+            className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-700 rounded-xl shadow-lg p-4 hover:shadow-2xl transition duration-300"
           >
             <img
               src={listing.image}
               alt={listing.name}
               className="w-full h-56 object-cover rounded-lg mb-4"
             />
-            <h3 className="text-xl font-semibold mb-1">{listing.name}</h3>
-            <p className="text-sm text-gray-600 mb-2">
+            <h3 className="text-xl font-semibold mb-1 text-gray-900 dark:text-white">
+              {listing.name}
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
               Category: {listing.category}
             </p>
-            <p className="text-lg font-bold text-purple-700 mb-1">
+            <p className="text-lg font-bold text-purple-700 dark:text-pink-400 mb-1">
               {listing.price}
             </p>
-            <p className="text-sm text-gray-500 mb-3">📍 {listing.location}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+              📍 {listing.location}
+            </p>
 
-            <button className="bg-linear-to-r from-purple-50 to-pink-50  px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+            <button className="px-5 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800 dark:to-pink-700 rounded-md font-semibold hover:opacity-70 transition duration-300 shadow-md">
               See Details
             </button>
           </div>

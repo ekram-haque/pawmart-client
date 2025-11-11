@@ -32,9 +32,9 @@ const heroes = [
 
 const PetHeroes = () => {
   return (
-    <section className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
+    <section className="py-25 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900 mb-25 transition duration-300">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-purple-800 text-center mb-12">
+        <h2 className="text-4xl font-bold text-purple-800 dark:text-purple-300 text-center mb-12">
           🐕 Meet Our Pet Heroes
         </h2>
 
@@ -47,7 +47,7 @@ const PetHeroes = () => {
               }`}
             >
               {/* Image */}
-              <div className="lg:w-1/2 bg-white">
+              <div className="lg:w-1/2">
                 <img
                   src={hero.image}
                   alt={hero.name}
@@ -56,12 +56,16 @@ const PetHeroes = () => {
               </div>
 
               {/* Description */}
-              <div className="lg:w-1/2 text-center lg:text-left">
-                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+              <div className="lg:w-1/2 text-center lg:text-left bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md">
+                <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-2">
                   {hero.name}
                 </h3>
-                <p className="text-purple-700 font-semibold mb-2">{hero.role}</p>
-                <p className="text-gray-700">{hero.description}</p>
+                <p className="text-purple-700 dark:text-purple-400 font-semibold mb-2">
+                  {hero.role}
+                </p>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {hero.description}
+                </p>
               </div>
             </div>
           ))}
