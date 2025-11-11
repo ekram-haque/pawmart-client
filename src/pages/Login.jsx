@@ -2,8 +2,63 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaFacebook } from "react-icons/fa";
 import { Toaster } from "react-hot-toast";
 import { Link } from "react-router";
+import {  useLocation, useNavigate } from "react-router";
+import {  useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
+
+  // //////////////////////////////////////////////////
+
+const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthContext);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log(location);
+
+  const handleLogIn = (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+
+    console.log(email, password);
+    signInWithEmailAndPasswordfunc(email, password)
+      .then((result) => {
+        console.log(result.user);
+        event.target.reset();
+        navigate(location.state || "/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleGoogleSignIn = () => {
+    signInWithPopupfunc()
+      .then((result) => {
+        console.log(result.user);
+        navigate(location?.state || "/");
+      })
+      .catch((error) => {
+        console.log('message',error);
+      });
+  };
+
+
+  // //////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="py-10 flex items-center justify-center bg-linear-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300 min-h-screen">
       <Toaster position="top-center" />
@@ -16,7 +71,7 @@ export default function LoginPage() {
         </p>
 
         {/* Manual Login Form */}
-        <form onSubmit={""} className="flex flex-col gap-4">
+        <form onSubmit={handleLogIn} className="flex flex-col gap-4">
           <div>
             <label className="text-sm text-gray-600 dark:text-gray-300">Email</label>
             <input
@@ -51,7 +106,7 @@ export default function LoginPage() {
         {/* Social Login Buttons */}
         <div className="flex flex-col gap-3 mb-6">
           <button
-            onClick={""}
+            onClick={handleGoogleSignIn}
             className="flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
           >
             <FcGoogle size={24} /> Login with Google

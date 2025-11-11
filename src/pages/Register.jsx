@@ -1,40 +1,76 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaFacebook } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 
 export default function RegisterPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    location: "",
-    bio: "",
-  });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
-  const handleSubmit = (e) => {
+//////////////////////////////////////////////////////////
+
+
+const { createUserwithEmailPassfunc,setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSignup = (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match!");
+    const email = e.target.email?.value;
+    const password = e.target.password?.value;
+    const displayName = e.target.name?.value;
+    const photoURL = e.target.photo?.value;
+    console.log("clicked", { email, password, displayName, photoURL });
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
+    if (!regex.test(password)) {
+      toast.error("weak password");
       return;
     }
-    toast.success(`Account created for ${formData.name}`);
-    console.log("Register Data:", formData);
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      location: "",
-      bio: "",
-    });
+
+    createUserwithEmailPassfunc(email, password)
+      .then((res) => {
+
+        updateProfile(res.user, {
+          displayName,
+          photoURL,
+        })
+          .then(() =>
+            sendEmailVerification(res.user).then(() => {
+              toast.success("check your email to verified!");
+              setUser(null)
+              navigate("/login");
+              return
+            })
+          )
+          .catch((error) => {
+            console.log(error);
+            toast.error(error.message);
+          });
+          
+        console.log(res);
+       
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
   };
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////
+
 
   return (
     <div className="py-10 flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 px-4 min-h-screen transition-colors duration-300">
@@ -48,14 +84,13 @@ export default function RegisterPage() {
         </p>
 
         {/* Manual Registration Form */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <div>
             <label className="text-sm text-gray-600 dark:text-gray-300">Full Name</label>
             <input
               type="text"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
+             
               required
               placeholder="Enter your full name"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
@@ -67,8 +102,7 @@ export default function RegisterPage() {
             <input
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
+             
               required
               placeholder="Enter your email"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
@@ -80,8 +114,7 @@ export default function RegisterPage() {
             <input
               type="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
+             
               required
               placeholder="Enter your password"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
@@ -93,8 +126,7 @@ export default function RegisterPage() {
             <input
               type="password"
               name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+            
               required
               placeholder="Confirm your password"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
@@ -106,8 +138,7 @@ export default function RegisterPage() {
             <input
               type="text"
               name="location"
-              value={formData.location}
-              onChange={handleChange}
+              
               placeholder="Enter your location"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
             />
@@ -117,8 +148,7 @@ export default function RegisterPage() {
             <label className="text-sm text-gray-600 dark:text-gray-300">Bio</label>
             <textarea
               name="bio"
-              value={formData.bio}
-              onChange={handleChange}
+              
               placeholder="Tell us about yourself"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600"
             />

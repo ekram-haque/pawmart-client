@@ -30,6 +30,10 @@ const router = createBrowserRouter([
                 path:'pet-supplies',
                 element:<PetsSuppliesPage/>
             },
+               {
+                path:'blog',
+                element:<OurBlog/>
+            },
             {
                 path:'add-listing-page',
                 element: <AddListingPage/>
@@ -43,14 +47,12 @@ const router = createBrowserRouter([
                 path: 'My-orders',
                 element:<MyOrdersPage/>
             },
+           
             {
                 path:'listing-details-page',
                 element:<ListingDetailsPage/>
             },
-              {
-                path:'blog',
-                element:<OurBlog/>
-            },
+            
               {
                 path:'profile',
                 element:<MyProfile/>
