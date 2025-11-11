@@ -26,7 +26,7 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <div className="py-16 bg-linear-to-r from-purple-50 to-pink-50">
+    <div className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
       <div className="max-w-6xl mx-auto text-center px-4">
         <h2 className="text-4xl font-bold text-purple-800 mb-2">
           Browse By Category

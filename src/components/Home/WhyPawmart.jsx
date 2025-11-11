@@ -2,8 +2,8 @@ import React from "react";
 
 const WhyAdopt = () => {
   return (
-    <section className="py-16 bg-linear-to-r from-purple-50 to-pink-50">
-      <div className="max-w-6xl mx-auto text-center px-4">
+    <section className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
+      <div className="max-w-7xl mx-auto text-center px-4">
         <div className="flex flex-row-reverse items-center justify-between gap-10">
           <div>
             <h2 className="text-4xl font-bold text-purple-800 mb-6">

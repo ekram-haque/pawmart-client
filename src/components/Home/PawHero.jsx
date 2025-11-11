@@ -32,7 +32,7 @@ const heroes = [
 
 const PetHeroes = () => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-25 bg-linear-to-r from-purple-50 to-pink-50 mb-25">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-purple-800 text-center mb-12">
           🐕 Meet Our Pet Heroes
@@ -47,7 +47,7 @@ const PetHeroes = () => {
               }`}
             >
               {/* Image */}
-              <div className="lg:w-1/2">
+              <div className="lg:w-1/2 bg-white">
                 <img
                   src={hero.image}
                   alt={hero.name}

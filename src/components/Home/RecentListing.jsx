@@ -59,7 +59,7 @@ const RecentListings = () => {
   ];
 
   return (
-    <section className="py-12 ">
+    <section className="py-12 mb-25 ">
       <h2 className="text-3xl font-bold text-center mb-8 text-black">
         🐾 Recent Listings
       </h2>

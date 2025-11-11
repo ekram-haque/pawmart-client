@@ -5,7 +5,7 @@ import Container from "./MyContainer";
 
 const Footer = () => {
   return (
-    <div className="bg-linear-to-r from-purple-50 to-pink-50 shadow-md   py-10 mt-10 ">
+    <div className="bg-linear-to-r from-purple-50 to-pink-50 shadow-md pt-25 pb-5  ">
       <Container>
         <div className="  px-6 text-center md:text-left">
           {/* Top Section - Links */}

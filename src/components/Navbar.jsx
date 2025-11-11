@@ -36,13 +36,25 @@ const Navbar = () => {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
              <li>
-                  <a >Home</a>
+                  <MyLink to={'/home'} >Home</MyLink>
                 </li>
                 <li>
-                  <a >Pet & Supplies</a>
+                  <MyLink to={'/pet-supplies'} >Pet & Supplies</MyLink>
                 </li>
                 <li>
-                  <a >Blog</a>
+                  <MyLink to={'/blog'} >Blog</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/add-listing-page'} >Add Listing</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/My-listing-page'} >My Listing</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/My-orders'} >My Order</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/profile'} >My Profile</MyLink>
                 </li>
             </ul>
           </div>
@@ -54,13 +66,25 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
               <li>
-                  <a >Home</a>
+                  <MyLink to={'/home'} >Home</MyLink>
                 </li>
                 <li>
-                  <a >Pet & Supplies</a>
+                  <MyLink to={'/pet-supplies'} >Pet & Supplies</MyLink>
                 </li>
                 <li>
-                  <a >Blog</a>
+                  <MyLink to={'/blog'} >Blog</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/add-listing-page'} >Add Listing</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/My-listing-page'} >My Listing</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/My-orders'} >My Order</MyLink>
+                </li>
+                <li>
+                  <MyLink to={'/profile'} >My Profile</MyLink>
                 </li>
                 
           </ul>
