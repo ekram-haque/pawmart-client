@@ -10,11 +10,13 @@ import OurBlog from "../components/Home/Blog";
 import MyProfile from "../pages/MyProfile";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
+import NotFoundPage from "../pages/page404";
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <MainLayout/>,
+        errorElement:<NotFoundPage/>,
         children:[
             {
                 index:true,
