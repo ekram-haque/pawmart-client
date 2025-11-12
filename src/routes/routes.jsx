@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import Home from '../pages/Home'
+import Home from "../pages/Home";
 import MainLayout from "../layout/MainLayout";
 import PetsSuppliesPage from "../pages/PetSupplies";
 import AddListingPage from "../pages/AddListingPage";
@@ -11,63 +11,82 @@ import MyProfile from "../pages/MyProfile";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import NotFoundPage from "../pages/page404";
+import PrivateRoute from "../privateRoute/PrivateRoute";
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <MainLayout/>,
-        errorElement:<NotFoundPage/>,
-        children:[
-            {
-                index:true,
-                element:<Home/>
-            },
-            {
-                path:'/home',
-                element:<Home/>
-            },
-            {
-                path:'pet-supplies',
-                element:<PetsSuppliesPage/>
-            },
-               {
-                path:'blog',
-                element:<OurBlog/>
-            },
-            {
-                path:'add-listing-page',
-                element: <AddListingPage/>
-            
-            },
-            {
-                path:'My-listing-page',
-                element:<MyListingsPage/>
-            },
-            {
-                path: 'My-orders',
-                element:<MyOrdersPage/>
-            },
-           
-            {
-                path:'listing-details-page',
-                element:<ListingDetailsPage/>
-            },
-            
-              {
-                path:'profile',
-                element:<MyProfile/>
-            },
-             {
-                path:'login',
-                element:<LoginPage/>
-            },
-            {
-                path:'register',
-                element: <RegisterPage/>
-            
-            }
-        ]
-    }
-])
+  {
+    path: "/",
+    element: <MainLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
+      },
+      {
+        path: "pet-supplies",
+        element: <PetsSuppliesPage />,
+      },
+      {
+        path: "blog",
+        element: <OurBlog />,
+      },
+      {
+        path: "add-listing-page",
+        element: (
+          <PrivateRoute>
+            <AddListingPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "My-listing-page",
+        element: (
+          <PrivateRoute>
+            <MyListingsPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "My-orders",
+        element: (
+          <PrivateRoute>
+            <MyOrdersPage />
+          </PrivateRoute>
+        ),
+      },
+
+      {
+        path: "listing-details-page",
+        element: (
+          <PrivateRoute>
+            <ListingDetailsPage />
+          </PrivateRoute>
+        ),
+      },
+
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <MyProfile />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+    ],
+  },
+]);
 
 export default router;

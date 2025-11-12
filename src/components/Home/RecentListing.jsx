@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const RecentListings = () => {
   const listings = [
@@ -88,9 +89,9 @@ const RecentListings = () => {
               📍 {listing.location}
             </p>
 
-            <button className="px-5 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800 dark:to-pink-700 rounded-md font-semibold hover:opacity-70 transition duration-300 shadow-md">
+            <Link to={'/product-details-page'} className="px-5 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800 dark:to-pink-700 rounded-md font-semibold hover:opacity-70 transition duration-300 shadow-md">
               See Details
-            </button>
+            </Link>
           </div>
         ))}
       </div>
