@@ -9,7 +9,7 @@ export default function PetsPage() {
 
   // Fetch listings from server
   useEffect(() => {
-    fetch("http://localhost:5000/products") // replace with your API
+    fetch("http://localhost:5000/products") 
       .then(res => res.json())
       .then(data => setListings(data))
       .catch(err => console.error(err));

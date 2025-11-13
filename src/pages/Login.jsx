@@ -17,7 +17,7 @@ export default function LoginPage() {
     location: "",
   };
 
-  await fetch(`https://localhost:5000/user/update-profile/${user.email}`, {
+  await fetch(`http://localhost:5000/user/update-profile/${user.email}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userInfo),

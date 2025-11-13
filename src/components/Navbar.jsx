@@ -67,7 +67,7 @@ const Navbar = () => {
                 </li>
                 <li>
                   {user && (
-                    <MyLink to="/add-listing-page">Add Listing Page</MyLink>
+                    <MyLink to="/add-listing">Add Listing Page</MyLink>
                   )}
                 </li>
                 <li>
@@ -102,7 +102,7 @@ const Navbar = () => {
               </li>
               <li>
                 {user && (
-                  <MyLink to="/add-listing-page">Add Listing Page</MyLink>
+                  <MyLink to="/add-listing">Add Listing Page</MyLink>
                 )}
               </li>
               <li>

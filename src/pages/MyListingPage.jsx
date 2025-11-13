@@ -1,107 +1,188 @@
-import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Pencil, Trash2 } from "lucide-react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
-const dummyListings = [
-  {
-    id: 1,
-    name: "Golden Retriever Puppy",
-    category: "Pets",
-    price: 0,
-    location: "Dhaka",
-    date: "2025-10-27",
-  },
-  {
-    id: 2,
-    name: "Dog Collar",
-    category: "Accessories",
-    price: 10,
-    location: "Chattogram",
-    date: "2025-10-25",
-  },
-  {
-    id: 3,
-    name: "Cat Food Pack",
-    category: "Food",
-    price: 20,
-    location: "Sylhet",
-    date: "2025-10-20",
-  },
-];
+const MyListings = () => {
+  const { user } = useContext(AuthContext);
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editingItem, setEditingItem] = useState(null); // modal data state
 
-const MyListingsPage = () => {
-  const [listings, setListings] = useState(dummyListings);
+  // Fetch user listings
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:5000/products?email=${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setListings(data);
+          setLoading(false);
+        });
+    }
+  }, [user?.email]);
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this listing?")) {
-      setListings(listings.filter((item) => item.id !== id));
-      toast.success("Listing Deleted Successfully!");
+  // Handle delete
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure?");
+    if (!confirm) return;
+
+    const res = await fetch(`http://localhost:5000/products/${id}`, {
+      method: "DELETE",
+    });
+    const result = await res.json();
+
+    if (result.deletedCount > 0) {
+      toast.success("Deleted successfully!");
+      setListings(listings.filter((item) => item._id !== id));
     }
   };
 
+  // Handle update (PUT request)
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const updated = {
+      name: form.name.value,
+      category: form.category.value,
+      price: parseFloat(form.price.value),
+      location: form.location.value,
+      description: form.description.value,
+      image: form.image.value,
+    };
+
+    const res = await fetch(`http://localhost:5000/products/${editingItem._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updated),
+    });
+
+    const result = await res.json();
+
+    if (result.modifiedCount > 0) {
+      toast.success("Listing updated successfully!");
+      // update local state
+      setListings((prev) =>
+        prev.map((item) => (item._id === editingItem._id ? { ...item, ...updated } : item))
+      );
+      setEditingItem(null); // close modal
+    }
+  };
+
+  if (loading) return <p className="text-center mt-10">Loading...</p>;
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 py-12 px-6 transition-colors duration-300">
-      <Toaster position="top-right" />
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-extrabold text-center mb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-indigo-700 dark:from-purple-400 dark:to-indigo-400">
-          🐾 My Listings
-        </h1>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4 text-center">🐾 My Listings</h2>
 
-        {/* Listing count */}
-        <p className="ml-3 mb-5 mt-6 text-gray-500 dark:text-gray-300 text-sm text-left">
-          Total Listings: <span className="font-semibold">{listings.length}</span>
-        </p>
-
-        <div className="overflow-x-auto shadow-xl rounded-2xl bg-white dark:bg-gray-800 transition-colors duration-300">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-gradient-to-r from-purple-200 to-pink-200 dark:from-gray-700 dark:to-gray-700 text-gray-700 dark:text-gray-200">
-                <th className="py-4 px-6 text-left font-semibold">Name</th>
-                <th className="py-4 px-6 text-left font-semibold">Category</th>
-                <th className="py-4 px-6 text-left font-semibold">Price ($)</th>
-                <th className="py-4 px-6 text-left font-semibold">Location</th>
-                <th className="py-4 px-6 text-left font-semibold">Date</th>
-                <th className="py-4 px-6 text-center font-semibold">Actions</th>
+      <div className="overflow-x-auto">
+        <table className="table w-full rounded-xl">
+          <thead className="bg-purple-100">
+            <tr>
+              <th>#</th>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Location</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listings.map((item, index) => (
+              <tr key={item._id}>
+                <td>{index + 1}</td>
+                <td>
+                  <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                </td>
+                <td>{item.name}</td>
+                <td>{item.category}</td>
+                <td>{item.price === 0 ? "Free" : `$${item.price}`}</td>
+                <td>{item.location}</td>
+                <td className="space-x-2">
+                  <button
+                    onClick={() => setEditingItem(item)}
+                    className="btn btn-sm bg-blue-500 text-white"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="btn btn-sm bg-red-500 text-white"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {listings.map((item, index) => (
-                <tr
-                  key={item.id}
-                  className={`transition-all hover:bg-purple-50 dark:hover:bg-gray-700 ${
-                    index % 2 === 0
-                      ? "bg-white dark:bg-gray-800"
-                      : "bg-gray-50 dark:bg-gray-700"
-                  }`}
-                >
-                  <td className="py-4 px-6 font-medium text-gray-800 dark:text-gray-100">
-                    {item.name}
-                  </td>
-                  <td className="py-4 px-6 text-gray-600 dark:text-gray-300">{item.category}</td>
-                  <td className="py-4 px-6 text-gray-800 dark:text-gray-100 font-semibold">
-                    ${item.price}
-                  </td>
-                  <td className="py-4 px-6 text-gray-600 dark:text-gray-300">{item.location}</td>
-                  <td className="py-4 px-6 text-gray-500 dark:text-gray-400">{item.date}</td>
-                  <td className="py-4 px-6 text-center space-x-3">
-                    <button className="inline-flex items-center bg-yellow-400/90 dark:bg-yellow-500/80 hover:bg-yellow-500 dark:hover:bg-yellow-600 px-3 py-1.5 rounded-lg shadow-sm transition text-gray-800 dark:text-gray-900">
-                      <Pencil className="w-4 h-4 mr-1" /> Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="inline-flex items-center bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition"
-                    >
-                      <Trash2 className="w-4 h-4 mr-1" /> Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
+
+      {/* ✅ Modal for Editing */}
+      {editingItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-xl w-96 relative">
+            <h3 className="text-xl font-semibold mb-4 text-center">Edit Listing</h3>
+            <form onSubmit={handleUpdate} className="space-y-3">
+              <input
+                type="text"
+                name="name"
+                defaultValue={editingItem.name}
+                placeholder="Name"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="text"
+                name="category"
+                defaultValue={editingItem.category}
+                placeholder="Category"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="number"
+                name="price"
+                defaultValue={editingItem.price}
+                placeholder="Price"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="text"
+                name="location"
+                defaultValue={editingItem.location}
+                placeholder="Location"
+                className="input input-bordered w-full"
+              />
+              <textarea
+                name="description"
+                defaultValue={editingItem.description}
+                placeholder="Description"
+                className="textarea textarea-bordered w-full"
+              />
+              <input
+                type="text"
+                name="image"
+                defaultValue={editingItem.image}
+                placeholder="Image URL"
+                className="input input-bordered w-full"
+              />
+              <div className="flex justify-between mt-4">
+                <button type="submit" className="btn bg-green-500 text-white">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="btn bg-gray-400 text-white"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default MyListingsPage;
+export default MyListings;

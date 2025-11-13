@@ -33,9 +33,15 @@ const router = createBrowserRouter([
         path: "pet-supplies",
         element: <PetsSuppliesPage />,
       },
-       {
+      {
         path: "products/product-details/:id",
-        loader:({params})=>fetch(`http://localhost:5000/products/${params.id}`),
+        loader: ({ params }) =>
+          fetch(
+            `http://localhost:5000/products/product-details/${params.id}`
+          ).then((res) => {
+            if (!res.ok) throw new Error("Failed to fetch product");
+            return res.json();
+          }),
         element: <ProductDetails />,
       },
       {
@@ -44,10 +50,10 @@ const router = createBrowserRouter([
       },
       {
         path: "products/category-filtered-product/:category",
-        element: <CategoryDetails/>,
+        element: <CategoryDetails />,
       },
       {
-        path: "add-listing-page",
+        path: "add-listing",
         element: (
           <PrivateRoute>
             <AddListingPage />
@@ -71,10 +77,7 @@ const router = createBrowserRouter([
         ),
       },
 
-      {
-        path: "listing-details-page",
-        element: <ListingDetailsPage />,
-      },
+   
 
       {
         path: "profile",

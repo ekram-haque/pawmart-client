@@ -3,6 +3,9 @@ import React from "react";
 import { Link, NavLink } from "react-router";
 
 export default function ListingCard({ listing }) {
+  console.log("Product Image URL:", listing.image);
+
+  console.log( listing._id)
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
       <img
