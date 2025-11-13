@@ -24,11 +24,14 @@ const AddListing = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newListing),
-      });
+      const res = await fetch(
+        "https://pawmart-server-nine.vercel.app/products",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newListing),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to add listing");
 
@@ -45,7 +48,9 @@ const AddListing = () => {
   return (
     <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-10">
       <Toaster position="top-center" />
-      <h2 className="text-2xl font-bold mb-5 text-center">🧺 Add New Listing</h2>
+      <h2 className="text-2xl font-bold mb-5 text-center">
+        🧺 Add New Listing
+      </h2>
 
       <form onSubmit={handleAddListing} className="space-y-4">
         {/* Name */}
@@ -63,7 +68,11 @@ const AddListing = () => {
         {/* Category */}
         <div>
           <label className="block font-medium mb-1">Category</label>
-          <select name="category" required className="w-full border p-2 rounded">
+          <select
+            name="category"
+            required
+            className="w-full border p-2 rounded"
+          >
             <option value="Pets">Pets</option>
             <option value="Food">Food</option>
             <option value="Accessories">Accessories</option>
@@ -120,7 +129,9 @@ const AddListing = () => {
 
         {/* Date */}
         <div>
-          <label className="block font-medium mb-1">Pick Up / Available Date</label>
+          <label className="block font-medium mb-1">
+            Pick Up / Available Date
+          </label>
           <input
             type="date"
             name="date"

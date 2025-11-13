@@ -7,20 +7,20 @@ import { AuthContext } from "../context/AuthContext";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 
 const MyOrders = () => {
-  const { user,loading } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
-
-   
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/my-orders?email=${user.email}`)
+      fetch(
+        `https://pawmart-server-nine.vercel.app/my-orders?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => setOrders(data))
-        .catch((err) => toast.error("Failed to load orders",err));
+        .catch((err) => toast.error("Failed to load orders", err));
     }
   }, [user]);
- 
+
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.text("My Orders", 14, 15);
@@ -85,7 +85,9 @@ const MyOrders = () => {
                 <tr
                   key={order._id}
                   className={`transition-all hover:bg-blue-50 dark:hover:bg-gray-700 ${
-                    index % 2 === 0 ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-700"
+                    index % 2 === 0
+                      ? "bg-white dark:bg-gray-800"
+                      : "bg-gray-50 dark:bg-gray-700"
                   }`}
                 >
                   <td className="p-4">{order.productName}</td>

@@ -2,32 +2,34 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub, FaFacebook } from "react-icons/fa";
 import { Toaster } from "react-hot-toast";
 import { Link } from "react-router";
-import {  useLocation, useNavigate } from "react-router";
-import {  useContext } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
-
   const saveUserToDB = async (user) => {
-  const userInfo = {
-    name: user.displayName || "No name",
-    email: user.email,
-    photoURL: user.photoURL || "",
-    bio: "",
-    location: "",
+    const userInfo = {
+      name: user.displayName || "No name",
+      email: user.email,
+      photoURL: user.photoURL || "",
+      bio: "",
+      location: "",
+    };
+
+    await fetch(
+      `https://pawmart-server-nine.vercel.app/user/update-profile/${user.email}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInfo),
+      }
+    );
   };
-
-  await fetch(`http://localhost:5000/user/update-profile/${user.email}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userInfo),
-  });
-};
-
 
   // //////////////////////////////////////////////////
 
-const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthContext);
+  const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } =
+    useContext(AuthContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -54,29 +56,16 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
     signInWithPopupfunc()
       .then((result) => {
         const user = result.user;
-    saveUserToDB(user);
+        saveUserToDB(user);
         console.log(result.user);
         navigate(location?.state?.from?.pathname || "/");
       })
       .catch((error) => {
-        console.log('message',error);
+        console.log("message", error);
       });
   };
 
-
   // //////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <div className="py-10 flex items-center justify-center bg-linear-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300 min-h-screen">
@@ -92,7 +81,9 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
         {/* Manual Login Form */}
         <form onSubmit={handleLogIn} className="flex flex-col gap-4">
           <div>
-            <label className="text-sm text-gray-600 dark:text-gray-300">Email</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -102,7 +93,9 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
             />
           </div>
           <div>
-            <label className="text-sm text-gray-600 dark:text-gray-300">Password</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300">
+              Password
+            </label>
             <input
               type="password"
               name="password"
@@ -130,7 +123,6 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
           >
             <FcGoogle size={24} /> Login with Google
           </button>
-          
         </div>
 
         <p className="text-center text-gray-500 dark:text-gray-300 mt-4">

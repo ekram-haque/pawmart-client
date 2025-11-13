@@ -12,7 +12,7 @@ export default function PetsPage() {
 
   // Fetch listings from server
   useEffect(() => {
-    fetch("http://localhost:5000/products") 
+    fetch("https://pawmart-server-nine.vercel.app/products") 
       .then(res => res.json())
       .then(data => setListings(data))
       .catch(err => console.error(err));

@@ -13,7 +13,9 @@ const MyListings = () => {
   // Fetch user listings
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/products?email=${user.email}`)
+      fetch(
+        `https://pawmart-server-nine.vercel.app/products?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setListings(data);
@@ -28,7 +30,10 @@ const MyListings = () => {
     const confirm = window.confirm("Are you sure?");
     if (!confirm) return;
 
-    const res = await fetch(`http://localhost:5000/products/${id}`, { method: "DELETE" });
+    const res = await fetch(
+      `https://pawmart-server-nine.vercel.app/products/${id}`,
+      { method: "DELETE" }
+    );
     const result = await res.json();
 
     if (result.deletedCount > 0) {
@@ -51,24 +56,28 @@ const MyListings = () => {
       image: form.image.value,
     };
 
-    const res = await fetch(`http://localhost:5000/products/${editingItem._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updated),
-    });
+    const res = await fetch(
+      `https://pawmart-server-nine.vercel.app/products/${editingItem._id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updated),
+      }
+    );
 
     const result = await res.json();
 
     if (result.modifiedCount > 0) {
       toast.success("Listing updated successfully!");
       setListings((prev) =>
-        prev.map((item) => (item._id === editingItem._id ? { ...item, ...updated } : item))
+        prev.map((item) =>
+          item._id === editingItem._id ? { ...item, ...updated } : item
+        )
       );
       setEditingItem(null);
     }
   };
 
-  
   if (loading) return <LoadingSkeleton count={6} />;
 
   return (
@@ -99,7 +108,11 @@ const MyListings = () => {
               >
                 <td>{index + 1}</td>
                 <td>
-                  <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded"
+                  />
                 </td>
                 <td>{item.name}</td>
                 <td>{item.category}</td>
@@ -133,17 +146,62 @@ const MyListings = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h3 className="text-xl font-semibold mb-4 text-center">Edit Listing</h3>
+            <h3 className="text-xl font-semibold mb-4 text-center">
+              Edit Listing
+            </h3>
             <form onSubmit={handleUpdate} className="space-y-3">
-              <input type="text" name="name" defaultValue={editingItem.name} placeholder="Name" className="input input-bordered w-full" />
-              <input type="text" name="category" defaultValue={editingItem.category} placeholder="Category" className="input input-bordered w-full" />
-              <input type="number" name="price" defaultValue={editingItem.price} placeholder="Price" className="input input-bordered w-full" />
-              <input type="text" name="location" defaultValue={editingItem.location} placeholder="Location" className="input input-bordered w-full" />
-              <textarea name="description" defaultValue={editingItem.description} placeholder="Description" className="textarea textarea-bordered w-full" />
-              <input type="text" name="image" defaultValue={editingItem.image} placeholder="Image URL" className="input input-bordered w-full" />
+              <input
+                type="text"
+                name="name"
+                defaultValue={editingItem.name}
+                placeholder="Name"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="text"
+                name="category"
+                defaultValue={editingItem.category}
+                placeholder="Category"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="number"
+                name="price"
+                defaultValue={editingItem.price}
+                placeholder="Price"
+                className="input input-bordered w-full"
+              />
+              <input
+                type="text"
+                name="location"
+                defaultValue={editingItem.location}
+                placeholder="Location"
+                className="input input-bordered w-full"
+              />
+              <textarea
+                name="description"
+                defaultValue={editingItem.description}
+                placeholder="Description"
+                className="textarea textarea-bordered w-full"
+              />
+              <input
+                type="text"
+                name="image"
+                defaultValue={editingItem.image}
+                placeholder="Image URL"
+                className="input input-bordered w-full"
+              />
               <div className="flex justify-between mt-4">
-                <button type="submit" className="btn bg-green-500 text-white">Save</button>
-                <button type="button" onClick={() => setEditingItem(null)} className="btn bg-gray-400 text-white">Cancel</button>
+                <button type="submit" className="btn bg-green-500 text-white">
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="btn bg-gray-400 text-white"
+                >
+                  Cancel
+                </button>
               </div>
             </form>
           </motion.div>

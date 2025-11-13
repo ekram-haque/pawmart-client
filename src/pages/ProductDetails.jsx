@@ -18,41 +18,41 @@ const ProductDetails = () => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
- const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const orderData = {
-    buyerName: user?.displayName || "Anonymous User",
-    buyerEmail: user?.email,           // backend GET /my-orders এ email check হবে
-    productId: product._id,
-    productName: product.name,
-    price: product.price || 0,
-    address: formData.address,
-    date: formData.date,
-    phone: formData.phone,
-    notes: formData.notes,
-  };
+    const orderData = {
+      buyerName: user?.displayName || "Anonymous User",
+      buyerEmail: user?.email, // backend GET /my-orders এ email check হবে
+      productId: product._id,
+      productName: product.name,
+      price: product.price || 0,
+      address: formData.address,
+      date: formData.date,
+      phone: formData.phone,
+      notes: formData.notes,
+    };
 
-  // POST request to save order in MongoDB
-  fetch("http://localhost:5000/orders", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderData),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("✅ Order saved:", data);
-      toast.success("🎉 Order placed successfully!");
-
-      // Reset form and close modal
-      setShowModal(false);
-      setFormData({ address: "", date: "", phone: "", notes: "" });
+    // POST request to save order in MongoDB
+    fetch("https://pawmart-server-nine.vercel.app/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
     })
-    .catch((err) => {
-      console.error("❌ Failed to save order:", err);
-      toast.error("Failed to place order!");
-    });
-};
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("✅ Order saved:", data);
+        toast.success("🎉 Order placed successfully!");
+
+        // Reset form and close modal
+        setShowModal(false);
+        setFormData({ address: "", date: "", phone: "", notes: "" });
+      })
+      .catch((err) => {
+        console.error("❌ Failed to save order:", err);
+        toast.error("Failed to place order!");
+      });
+  };
 
   const isOwner = user?.email === product.email;
 
@@ -91,8 +91,6 @@ const ProductDetails = () => {
 
           {/* Contact / Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-           
-
             {/* Show Adopt / Order button only if user isn't the owner */}
             {!isOwner && (
               <button

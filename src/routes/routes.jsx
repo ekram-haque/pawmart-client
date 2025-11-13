@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         path: "products/product-details/:id",
         loader: ({ params }) =>
           fetch(
-            `http://localhost:5000/products/product-details/${params.id}`
+            `https://pawmart-server-nine.vercel.app/products/product-details/${params.id}`
           ).then((res) => {
             if (!res.ok) throw new Error("Failed to fetch product");
             return res.json();
@@ -76,8 +76,6 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-
-   
 
       {
         path: "profile",

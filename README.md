@@ -1,16 +1,26 @@
-# React + Vite
+# 🐾 PawMart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** [https://whimsical-capybara-96287e.netlify.app/](https://whimsical-capybara-96287e.netlify.app/)
 
-Currently, two official plugins are available:
+PawMart is an online platform for buying, selling, and adopting pets, along with their accessories and food. Users can browse, add, and manage their own listings, place orders, and enjoy a smooth and interactive experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🔹 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **User Authentication:** Secure login and registration system with email-based authentication.  
+- **Add & Manage Listings:** Users can add their products/pets, update details, and delete listings.  
+- **Category Filtering:** Browse products based on categories like Pets, Food, Accessories, and Care Products.  
+- **Order Management:** Place orders and track them in the "My Orders" section.  
+- **Responsive UI:** Fully responsive design with light/dark mode support for better user experience.  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ⚡ Tech Stack
+
+- **Frontend:** React, TailwindCSS, React Router v6, React Hot Toast  
+- **Backend:** Node.js, Express.js, MongoDB  
+- **Deployment:** Vercel (Frontend) & Backend  
+
+---
+
