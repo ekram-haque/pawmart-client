@@ -5,6 +5,8 @@ import LoadingSkeleton from "../LoadingSkeleton";
 
 const RecentListings = ({recentListingPromise}) => {
 
+  
+
   const products = use(recentListingPromise)
   console.log(products)
   const {loading} =useContext(AuthContext)

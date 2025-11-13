@@ -20,7 +20,7 @@ export default function PetsPage() {
 
   // Filter & Search
   const filteredListings = listings.filter(listing => {
-    const matchesSearch = listing.name.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = listing.name.toLowerCase().trim().includes(search.toLowerCase().trim());
     const matchesCategory = categoryFilter ? listing.category === categoryFilter : true;
     return matchesSearch && matchesCategory;
   });

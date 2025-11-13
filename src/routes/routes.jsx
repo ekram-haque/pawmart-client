@@ -35,14 +35,19 @@ const router = createBrowserRouter([
       },
       {
         path: "products/product-details/:id",
-        loader: ({ params }) =>
-          fetch(
-            `https://pawmart-server-nine.vercel.app/products/product-details/${params.id}`
-          ).then((res) => {
-            if (!res.ok) throw new Error("Failed to fetch product");
-            return res.json();
-          }),
-        element: <ProductDetails />,
+        // loader: ({ params }) =>
+        //   fetch(
+        //     `https://pawmart-server-nine.vercel.app/products/product-details/${params.id}`
+        //   ).then((res) => {
+        //     if (!res.ok) throw new Error("Failed to fetch product");
+        //     return res.json();
+        //   }),
+        element: 
+        <PrivateRoute>
+
+          <ProductDetails />,
+        </PrivateRoute>
+        
       },
       {
         path: "blog",

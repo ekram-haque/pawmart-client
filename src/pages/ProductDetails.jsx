@@ -1,9 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 
 const ProductDetails = () => {
+  const id = useParams();
+
+   // Fetch listings from server
+    useEffect(() => {
+      fetch(`https://pawmart-server-nine.vercel.app/products/product-details/${id}`) 
+        .then(res => res.json())
+        
+    }, [id]);
+
   const product = useLoaderData();
   const { user } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
