@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 const MyListings = () => {
   const { user } = useContext(AuthContext);
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [editingItem, setEditingItem] = useState(null); // modal data state
+  const [editingItem, setEditingItem] = useState(null);
 
   // Fetch user listings
   useEffect(() => {
@@ -16,7 +18,8 @@ const MyListings = () => {
         .then((data) => {
           setListings(data);
           setLoading(false);
-        });
+        })
+        .catch(() => setLoading(false));
     }
   }, [user?.email]);
 
@@ -25,9 +28,7 @@ const MyListings = () => {
     const confirm = window.confirm("Are you sure?");
     if (!confirm) return;
 
-    const res = await fetch(`http://localhost:5000/products/${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(`http://localhost:5000/products/${id}`, { method: "DELETE" });
     const result = await res.json();
 
     if (result.deletedCount > 0) {
@@ -36,7 +37,7 @@ const MyListings = () => {
     }
   };
 
-  // Handle update (PUT request)
+  // Handle update
   const handleUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -60,15 +61,15 @@ const MyListings = () => {
 
     if (result.modifiedCount > 0) {
       toast.success("Listing updated successfully!");
-      // update local state
       setListings((prev) =>
         prev.map((item) => (item._id === editingItem._id ? { ...item, ...updated } : item))
       );
-      setEditingItem(null); // close modal
+      setEditingItem(null);
     }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  
+  if (loading) return <LoadingSkeleton count={6} />;
 
   return (
     <div className="p-6">
@@ -89,7 +90,13 @@ const MyListings = () => {
           </thead>
           <tbody>
             {listings.map((item, index) => (
-              <tr key={item._id}>
+              <motion.tr
+                key={item._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02, backgroundColor: "#e9d5ff" }}
+              >
                 <td>{index + 1}</td>
                 <td>
                   <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
@@ -112,73 +119,34 @@ const MyListings = () => {
                     Delete
                   </button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* ✅ Modal for Editing */}
+      {/* Modal */}
       {editingItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl w-96 relative">
+          <motion.div
+            className="bg-white p-6 rounded-xl w-96 relative"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
             <h3 className="text-xl font-semibold mb-4 text-center">Edit Listing</h3>
             <form onSubmit={handleUpdate} className="space-y-3">
-              <input
-                type="text"
-                name="name"
-                defaultValue={editingItem.name}
-                placeholder="Name"
-                className="input input-bordered w-full"
-              />
-              <input
-                type="text"
-                name="category"
-                defaultValue={editingItem.category}
-                placeholder="Category"
-                className="input input-bordered w-full"
-              />
-              <input
-                type="number"
-                name="price"
-                defaultValue={editingItem.price}
-                placeholder="Price"
-                className="input input-bordered w-full"
-              />
-              <input
-                type="text"
-                name="location"
-                defaultValue={editingItem.location}
-                placeholder="Location"
-                className="input input-bordered w-full"
-              />
-              <textarea
-                name="description"
-                defaultValue={editingItem.description}
-                placeholder="Description"
-                className="textarea textarea-bordered w-full"
-              />
-              <input
-                type="text"
-                name="image"
-                defaultValue={editingItem.image}
-                placeholder="Image URL"
-                className="input input-bordered w-full"
-              />
+              <input type="text" name="name" defaultValue={editingItem.name} placeholder="Name" className="input input-bordered w-full" />
+              <input type="text" name="category" defaultValue={editingItem.category} placeholder="Category" className="input input-bordered w-full" />
+              <input type="number" name="price" defaultValue={editingItem.price} placeholder="Price" className="input input-bordered w-full" />
+              <input type="text" name="location" defaultValue={editingItem.location} placeholder="Location" className="input input-bordered w-full" />
+              <textarea name="description" defaultValue={editingItem.description} placeholder="Description" className="textarea textarea-bordered w-full" />
+              <input type="text" name="image" defaultValue={editingItem.image} placeholder="Image URL" className="input input-bordered w-full" />
               <div className="flex justify-between mt-4">
-                <button type="submit" className="btn bg-green-500 text-white">
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEditingItem(null)}
-                  className="btn bg-gray-400 text-white"
-                >
-                  Cancel
-                </button>
+                <button type="submit" className="btn bg-green-500 text-white">Save</button>
+                <button type="button" onClick={() => setEditingItem(null)} className="btn bg-gray-400 text-white">Cancel</button>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

@@ -1,11 +1,14 @@
 // Pages/PetsPage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ListingCard from "../components/ProductCard";
+import { AuthContext } from "../context/AuthContext";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 export default function PetsPage() {
   const [listings, setListings] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const {loading} =useContext(AuthContext)
 
   // Fetch listings from server
   useEffect(() => {
@@ -21,6 +24,9 @@ export default function PetsPage() {
     const matchesCategory = categoryFilter ? listing.category === categoryFilter : true;
     return matchesSearch && matchesCategory;
   });
+
+   if (loading) return <LoadingSkeleton count={6} />;
+
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">

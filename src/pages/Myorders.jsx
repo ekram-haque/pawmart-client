@@ -4,10 +4,13 @@ import "jspdf-autotable";
 import toast, { Toaster } from "react-hot-toast";
 import { Download } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 const MyOrders = () => {
-  const { user } = useContext(AuthContext);
+  const { user,loading } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
+
+   
 
   useEffect(() => {
     if (user?.email) {
@@ -17,7 +20,7 @@ const MyOrders = () => {
         .catch((err) => toast.error("Failed to load orders",err));
     }
   }, [user]);
-
+ 
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.text("My Orders", 14, 15);
@@ -53,6 +56,7 @@ const MyOrders = () => {
     doc.save("my-orders.pdf");
     toast.success("✅ PDF Downloaded Successfully!");
   };
+  if (loading) return <LoadingSkeleton count={6} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 py-12 px-6">

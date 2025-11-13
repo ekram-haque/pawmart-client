@@ -1,13 +1,17 @@
-import React, { use } from "react";
+import React, { use, useContext } from "react";
 import { Link } from "react-router";
+import { AuthContext } from "../../context/AuthContext";
+import LoadingSkeleton from "../LoadingSkeleton";
 
 const RecentListings = ({recentListingPromise}) => {
 
   const products = use(recentListingPromise)
   console.log(products)
+  const {loading} =useContext(AuthContext)
   
   
-  
+   if (loading) return <LoadingSkeleton count={6} />;
+
 
   return (
     <section className="py-12 mb-25">
