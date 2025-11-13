@@ -14,7 +14,7 @@ const RecentListings = ({recentListingPromise}) => {
 
 
   return (
-    <section className="py-12 mb-25">
+    <section className="py-12 mb-25 w-11/12 mx-auto">
       <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
         🐾 Recent Listings
       </h2>

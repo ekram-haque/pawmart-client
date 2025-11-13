@@ -29,7 +29,7 @@ export default function PetsPage() {
 
 
   return (
-    <div className="min-h-screen p-6 bg-gradient-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen  p-6 bg-gradient-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
       <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Pets & Supplies</h1>
 
       {/* Filters */}
@@ -55,7 +55,7 @@ export default function PetsPage() {
       </div>
 
       {/* Listings Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-11/12 mx-auto">
         {filteredListings.map(listing => (
           <ListingCard key={listing._id} listing={listing} />
         ))}

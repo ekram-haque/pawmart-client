@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../context/AuthContext";
 
 const AddListing = () => {
@@ -11,45 +11,32 @@ const AddListing = () => {
     setLoading(true);
 
     const form = e.target;
-    const name = form.name.value;
-    const category = form.category.value;
-    const price = category === "Pets" ? 0 : parseFloat(form.price.value);
-    const location = form.location.value;
-    const description = form.description.value;
-    const image = form.image.value;
-    const date = form.date.value;
-    const email = user?.email;
-
     const newListing = {
-      name,
-      category,
-      price,
-      location,
-      description,
-      image,
-      date,
-      email,
+      name: form.name.value,
+      category: form.category.value,
+      price: form.category.value === "Pets" ? 0 : parseFloat(form.price.value),
+      location: form.location.value,
+      description: form.description.value,
+      image: form.image.value,
+      date: form.date.value,
+      email: user?.email,
       createdAt: new Date(),
     };
 
     try {
       const res = await fetch("http://localhost:5000/products", {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newListing),
       });
 
-      if (res.ok) {
-        toast.success("✅ Listing added successfully!");
-        form.reset();
-      } else {
-        toast.error("Failed to add listing!");
-      }
+      if (!res.ok) throw new Error("Failed to add listing");
+
+      toast.success("✅ Listing added successfully!");
+      form.reset();
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong!");
+      toast.error("❌ Something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -57,9 +44,11 @@ const AddListing = () => {
 
   return (
     <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-10">
+      <Toaster position="top-center" />
       <h2 className="text-2xl font-bold mb-5 text-center">🧺 Add New Listing</h2>
+
       <form onSubmit={handleAddListing} className="space-y-4">
-        {/* Product Name */}
+        {/* Name */}
         <div>
           <label className="block font-medium mb-1">Product / Pet Name</label>
           <input
@@ -140,7 +129,7 @@ const AddListing = () => {
           />
         </div>
 
-        {/* Email (readonly) */}
+        {/* Owner Email */}
         <div>
           <label className="block font-medium mb-1">Owner Email</label>
           <input
@@ -152,11 +141,15 @@ const AddListing = () => {
           />
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-indigo-600 text-white font-semibold py-2 rounded hover:bg-indigo-700"
+          className={`w-full py-2 font-semibold rounded ${
+            loading
+              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
         >
           {loading ? "Adding..." : "Add Listing"}
         </button>
