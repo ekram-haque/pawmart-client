@@ -3,9 +3,17 @@ import { FaEnvelope, FaMapMarkerAlt, FaCalendarAlt, FaUser } from "react-icons/f
 import { AuthContext } from "../context/AuthContext";
 
 export default function MyProfile() {
+
   const { user } = useContext(AuthContext);
 
-  if (!user) return <p className="text-center mt-10">Loading...</p>;
+//   useEffect(() => {
+//   fetch(`https://your-server.com/user/${user.email}`)
+//     .then(res => res.json())
+//     .then(data => user(data));
+// }, [user.email]);
+//   if (!user) return <p className="text-center mt-10">Loading...</p>;
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4 flex flex-col items-center transition-colors duration-300">

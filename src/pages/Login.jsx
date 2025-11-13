@@ -8,6 +8,23 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
 
+  const saveUserToDB = async (user) => {
+  const userInfo = {
+    name: user.displayName || "No name",
+    email: user.email,
+    photoURL: user.photoURL || "",
+    bio: "",
+    location: "",
+  };
+
+  await fetch(`https://localhost:5000/user/update-profile/${user.email}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userInfo),
+  });
+};
+
+
   // //////////////////////////////////////////////////
 
 const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthContext);
@@ -26,7 +43,7 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
       .then((result) => {
         console.log(result.user);
         event.target.reset();
-        navigate(location.state || "/");
+        navigate(location?.state?.from?.pathname || "/");
       })
       .catch((error) => {
         console.log(error);
@@ -36,8 +53,10 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
   const handleGoogleSignIn = () => {
     signInWithPopupfunc()
       .then((result) => {
+        const user = result.user;
+    saveUserToDB(user);
         console.log(result.user);
-        navigate(location?.state || "/");
+        navigate(location?.state?.from?.pathname || "/");
       })
       .catch((error) => {
         console.log('message',error);
@@ -111,12 +130,7 @@ const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } = useContext(AuthC
           >
             <FcGoogle size={24} /> Login with Google
           </button>
-          <button className="flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-            <FaGithub size={24} /> Login with GitHub
-          </button>
-          <button className="flex items-center justify-center gap-2 border rounded-lg py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-blue-600">
-            <FaFacebook size={24} /> Login with Facebook
-          </button>
+          
         </div>
 
         <p className="text-center text-gray-500 dark:text-gray-300 mt-4">

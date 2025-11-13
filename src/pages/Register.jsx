@@ -19,7 +19,7 @@ export default function RegisterPage() {
     const photoURL = e.target.photo?.value; // Photo URL input
     console.log("clicked", { email, password, displayName, photoURL });
 
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
     if (!regex.test(password)) {
       toast.error("Weak password");
       return;

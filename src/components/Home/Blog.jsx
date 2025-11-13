@@ -4,8 +4,7 @@ const blogPosts = [
   {
     id: 1,
     title: "5 Tips for Adopting a Pet Successfully",
-    excerpt:
-      "Learn how to prepare your home and heart for a new furry friend.",
+    excerpt: "Learn how to prepare your home and heart for a new furry friend.",
     image:
       "https://images.unsplash.com/photo-1601758125946-6ec2ef642b4c?auto=format&fit=crop&w=800&q=80",
     date: "Nov 10, 2025",

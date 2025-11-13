@@ -5,17 +5,19 @@ import { Link } from "react-router";
 const categories = [
   {
     icon: <FaDog size={50} className="text-purple-600 dark:text-purple-400" />,
-    title: "Pets (Adoption)",
+    
+    title: "Pets",
     desc: "Find your perfect furry companion and give them a loving home.",
   },
   {
     icon: <FaBone size={50} className="text-pink-600 dark:text-pink-400" />,
-    title: "Pet Food",
+    title: "Food",
     desc: "Healthy and nutritious food for dogs, cats, and more!",
   },
   {
     icon: <FaGift size={50} className="text-orange-500 dark:text-orange-400" />,
-    title: "Accessories",
+   
+    title: "Pet Accessories",
     desc: "Stylish collars, beds, and toys for your pets’ comfort.",
   },
   {
@@ -44,7 +46,7 @@ const CategorySection = () => {
               key={index}
               className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-6 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition duration-300"
             >
-              <Link to={`/category-filtered-product/:${item.title}`} className="flex flex-col items-center text-center">
+              <Link to={`/products/category-filtered-product/${encodeURIComponent(item.title)}`} className="flex flex-col items-center text-center">
                 <div className="mb-4">{item.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                   {item.title}

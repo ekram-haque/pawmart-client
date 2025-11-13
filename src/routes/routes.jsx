@@ -12,6 +12,8 @@ import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/Register";
 import NotFoundPage from "../pages/page404";
 import PrivateRoute from "../privateRoute/PrivateRoute";
+import CategoryDetails from "../components/Home/category/CategoryDetails";
+import ProductDetails from "../pages/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -31,9 +33,18 @@ const router = createBrowserRouter([
         path: "pet-supplies",
         element: <PetsSuppliesPage />,
       },
+       {
+        path: "products/product-details/:id",
+        loader:({params})=>fetch(`http://localhost:5000/products/${params.id}`),
+        element: <ProductDetails />,
+      },
       {
         path: "blog",
         element: <OurBlog />,
+      },
+      {
+        path: "products/category-filtered-product/:category",
+        element: <CategoryDetails/>,
       },
       {
         path: "add-listing-page",
@@ -62,11 +73,7 @@ const router = createBrowserRouter([
 
       {
         path: "listing-details-page",
-        element: (
-          <PrivateRoute>
-            <ListingDetailsPage />
-          </PrivateRoute>
-        ),
+        element: <ListingDetailsPage />,
       },
 
       {
