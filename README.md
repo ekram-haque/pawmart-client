@@ -1,6 +1,6 @@
 # 🐾 PawMart
 
-**Live Site:** [https://whimsical-capybara-96287e.netlify.app/](https://whimsical-capybara-96287e.netlify.app/)
+**Live Site:** [https://paw-mart.pages.dev/](https://paw-mart.pages.dev/)
 
 PawMart is an online platform for buying, selling, and adopting pets, along with their accessories and food. Users can browse, add, and manage their own listings, place orders, and enjoy a smooth and interactive experience.
 
