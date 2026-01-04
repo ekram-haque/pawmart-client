@@ -1,5 +1,5 @@
 // Pages/PetsPage.jsx
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { AuthContext } from "../context/AuthContext";
 import LoadingSkeleton from "../components/LoadingSkeleton";
