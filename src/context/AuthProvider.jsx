@@ -1,4 +1,4 @@
-// authprovider.jsx
+// AuthProvider.jsx
 import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
@@ -18,53 +18,38 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // create account
+  // ---------- Auth Functions ----------
   const createUserwithEmailPassfunc = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // sign in with email/password
   const signInWithEmailAndPasswordfunc = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // sign in with Google
   const signInWithPopupfunc = () => {
     setLoading(true);
     return signInWithPopup(auth, provider);
   };
 
-  // password reset
   const sendPasswordResetEmailfunc = (email) => {
     setLoading(true);
     return sendPasswordResetEmail(auth, email);
   };
 
-  //signout
   const logout = () => {
     setLoading(true);
     return signOut(auth);
   };
 
-  //  export everything through context
-  const authInfo = {
-    user,
-    setUser,
-    createUserwithEmailPassfunc,
-    signInWithEmailAndPasswordfunc,
-    signInWithPopupfunc,
-    sendPasswordResetEmailfunc,
-    logout,
-    loading,
-  };
-
+  // ---------- Auth State Observer ----------
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        // 🔹 Step 1: save/update user in DB
-        await fetch("http://localhost:5000/users", {
+      try {
+        // save/update user
+        await fetch("https://pawmart-server-gamma.vercel.app/users", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -75,28 +60,38 @@ const AuthProvider = ({ children }) => {
           }),
         });
 
-        // 🔹 Step 2: get FULL user from DB
+        // get user
         const res = await fetch(
-          `http://localhost:5000/users/${firebaseUser.email}`
+          `https://pawmart-server-gamma.vercel.app/users/${firebaseUser.email}`
         );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch user from DB");
+        }
+
         const dbUser = await res.json();
 
-        // 🔹 Step 3: Firebase + DB merge
-        setUser({
-          ...firebaseUser,
-          ...dbUser,
-        });
-      } else {
-        setUser(null);
+        setUser({ ...firebaseUser, ...dbUser });
+      } catch (err) {
+        console.error("Auth error:", err);
+        setUser(firebaseUser); // fallback
       }
-
-      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // main provider
+  const authInfo = {
+    user,
+    setUser,
+    loading,
+    createUserwithEmailPassfunc,
+    signInWithEmailAndPasswordfunc,
+    signInWithPopupfunc,
+    sendPasswordResetEmailfunc,
+    logout,
+  };
+
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

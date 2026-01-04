@@ -17,6 +17,7 @@ import ProductDetails from "../pages/ProductDetails";
 import DashboardLayout from "../layout/DashboardLayout";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
+import DashboardOverview from "../pages/DashboardOverview";
 
 const router = createBrowserRouter([
   {
@@ -37,19 +38,15 @@ const router = createBrowserRouter([
         element: <PetsSuppliesPage />,
       },
       {
-        path: "products/product-details/:id",
+        path: "product-details/:id",
         loader: ({ params }) =>
           fetch(
-            `https://pawmart-server-nine.vercel.app/products/product-details/${params.id}`
+            `https://pawmart-server-gamma.vercel.app/product-details/${params.id}`
           ).then((res) => {
             if (!res.ok) throw new Error("Failed to fetch product");
             return res.json();
           }),
-        element: (
-          <PrivateRoute>
-            <ProductDetails />,
-          </PrivateRoute>
-        ),
+        element: <ProductDetails />,
       },
       {
         path: "blog",
@@ -64,17 +61,13 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
-        path: "/products/category-product/:category",
+        path: "category-product/:category",
         element: <CategoryDetails />,
       },
 
       {
         path: "profile",
-        element: (
-          <PrivateRoute>
-            <MyProfile />
-          </PrivateRoute>
-        ),
+        element: <MyProfile />,
       },
       {
         path: "login",
@@ -92,31 +85,23 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <MyOrdersPage />,
+        element: <DashboardOverview />,
+      },
+      {
+        path:'overview',
+        element: <DashboardOverview />,
       },
       {
         path: "add-listing",
-        element: (
-          <PrivateRoute>
-            <AddListingPage />
-          </PrivateRoute>
-        ),
+        element: <AddListingPage />,
       },
       {
         path: "My-listings",
-        element: (
-          <PrivateRoute>
-            <MyListingsPage />
-          </PrivateRoute>
-        ),
+        element: <MyListingsPage />,
       },
       {
         path: "My-orders",
-        element: (
-          <PrivateRoute>
-            <MyOrdersPage />
-          </PrivateRoute>
-        ),
+        element: <MyOrdersPage />,
       },
     ],
   },

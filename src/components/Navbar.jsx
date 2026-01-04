@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import logo from "../assets/logo.png";
+import logo from "/logo.png";
 import MyLink from "./MyLink";
 import MyContainer from "./MyContainer";
 import { Link } from "react-router";

@@ -46,7 +46,7 @@ const ListingDetailsPage = () => {
       notes: formData.notes,
     };
 
-    fetch("https://pawmart-server-nine.vercel.app/orders", {
+    fetch("https://pawmart-server-gamma.vercel.app/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(orderData),
@@ -64,9 +64,9 @@ const ListingDetailsPage = () => {
   };
   useEffect(() => {
     fetch(
-      `http://localhost:5000/related/${encodeURIComponent(product.category)}/${
-        product._id
-      }`
+      `https://pawmart-server-gamma.vercel.app/related/${encodeURIComponent(
+        product.category
+      )}/${product._id}`
     )
       .then((res) => res.json())
       .then((data) => setRelatedProducts(data))
@@ -78,27 +78,51 @@ const ListingDetailsPage = () => {
   return (
     <div className="container mx-auto px-4 py-10 space-y-12">
       {/* ================= IMAGE SLIDER ================= */}
-      <section>
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          slidesPerView={1}
-          spaceBetween={20}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 3000 }}
-          loop
-          className="rounded-2xl"
-        >
-          {images.map((img, index) => (
-            <SwiperSlide key={index}>
-              <img
-                src={img}
-                alt="Product"
-                className="w-full h-96 object-cover rounded-2xl"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <section className="w-full py-10">
+        <div className="relative flex items-center justify-center gap-4">
+          {/* ⬅️ LEFT NAV */}
+          <button className="swiper-button-prev-custom px-4 py-2 bg-purple-600 text-white rounded-full shadow hover:bg-purple-700">
+            ❮
+          </button>
+
+          {/* 🖼️ SLIDER */}
+          <div className="w-full md:w-[60%]">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              slidesPerView={1}
+              autoplay={{ delay: 3000 }}
+              loop
+              navigation={{
+                prevEl: ".swiper-button-prev-custom",
+                nextEl: ".swiper-button-next-custom",
+              }}
+              pagination={{
+                el: ".swiper-pagination-custom",
+                clickable: true,
+              }}
+            >
+              {images.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <div className="flex justify-center">
+                    <img
+                      src={img}
+                      alt="Product"
+                      className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          {/* ➡️ RIGHT NAV */}
+          <button className="swiper-button-next-custom px-4 py-2 bg-purple-600 text-white rounded-full shadow hover:bg-purple-700">
+            ❯
+          </button>
+        </div>
+
+        {/* 🔵 PAGINATION (OUTSIDE IMAGE) */}
+        <div className="swiper-pagination-custom flex justify-center mt-4"></div>
       </section>
 
       {/* ================= OVERVIEW ================= */}
@@ -178,7 +202,7 @@ const ListingDetailsPage = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Related Listings</h2>
           <Link
-            to={`/products/category/${product.category}`}
+            to={`/category/${product.category}`}
             className="text-purple-600 font-medium"
           >
             View All
@@ -186,7 +210,7 @@ const ListingDetailsPage = () => {
         </div>
 
         {relatedProducts.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((item) => (
               <motion.article
                 initial={{ opacity: 0, y: 10 }}
@@ -232,7 +256,7 @@ const ListingDetailsPage = () => {
                   {/* Action */}
                   <div className="pt-3 mt-auto">
                     <Link
-                      to={`/products/product-details/${item._id}`}
+                      to={`/product-details/${item._id}`}
                       className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
                       aria-label={`View details of ${item.name}`}
                     >

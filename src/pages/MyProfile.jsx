@@ -24,15 +24,15 @@ export default function MyProfile() {
   const handleSave = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/user/update-profile/${user.email}`,
+        `https://pawmart-server-gamma.vercel.app/user/update-profile/${user.email}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         }
       );
-      const updatedUser = await (res.json());
-      setUser(updatedUser); 
+      const updatedUser = await res.json();
+      setUser(updatedUser);
       setIsEditing(false);
     } catch (err) {
       console.error(err);

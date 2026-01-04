@@ -25,7 +25,7 @@ const AddListing = () => {
 
     try {
       const res = await fetch(
-        "https://pawmart-server-nine.vercel.app/products",
+        "https://pawmart-server-gamma.vercel.app/products",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

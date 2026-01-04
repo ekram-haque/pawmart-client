@@ -11,7 +11,9 @@ const CategoryProducts = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5000/products/category-product/${category}`)
+    fetch(
+      `https://pawmart-server-gamma.vercel.app/category-product/${category}`
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -45,7 +47,7 @@ const CategoryProducts = () => {
         Products in "{category}" category
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-11/12 mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 w-11/12 mx-auto">
         {products.map((p) => (
           <motion.article
             initial={{ opacity: 0, y: 10 }}
@@ -91,7 +93,7 @@ const CategoryProducts = () => {
               {/* Action */}
               <div className="pt-3 mt-auto">
                 <Link
-                  to={`/products/product-details/${p._id}`}
+                  to={`/product-details/${p._id}`}
                   className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
                   aria-label={`View details of ${p.name}`}
                 >

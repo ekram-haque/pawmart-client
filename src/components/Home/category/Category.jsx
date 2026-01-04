@@ -46,7 +46,7 @@ const CategorySection = () => {
               key={index}
               className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-6 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition duration-300"
             >
-              <Link to={`/products/category-product/${item.title}`} className="flex flex-col items-center text-center">
+              <Link to={`/category-product/${item.title}`} className="flex flex-col items-center text-center">
                 <div className="mb-4">{item.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                   {item.title}

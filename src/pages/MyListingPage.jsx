@@ -14,7 +14,7 @@ const MyListings = () => {
   useEffect(() => {
     if (user?.email) {
       fetch(
-        `https://pawmart-server-nine.vercel.app/products?email=${user.email}`
+        `https://pawmart-server-gamma.vercel.app/products?email=${user.email}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -31,8 +31,10 @@ const MyListings = () => {
     if (!confirm) return;
 
     const res = await fetch(
-      `https://pawmart-server-nine.vercel.app/products/${id}`,
-      { method: "DELETE" }
+      `https://pawmart-server-gamma.vercel.app/products/${id}`,
+      {
+        method: "DELETE",
+      }
     );
     const result = await res.json();
 
@@ -57,7 +59,7 @@ const MyListings = () => {
     };
 
     const res = await fetch(
-      `https://pawmart-server-nine.vercel.app/products/${editingItem._id}`,
+      `https://pawmart-server-gamma.vercel.app/products/${editingItem._id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

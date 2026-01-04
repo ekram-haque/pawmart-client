@@ -28,7 +28,7 @@ export default function ProductCard({ listing }) {
       </div>
 
       {/* Content */}
-      <div className=" p-4 flex flex-col gap-3 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 ">
+      <div className=" p-3 flex flex-col gap-3 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 ">
         {/* Title */}
         <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
           {listing.name}
@@ -47,9 +47,9 @@ export default function ProductCard({ listing }) {
           {listing.price ? `$${listing.price}` : "Free Adoption"}
         </p>
         {/* Action */}
-        <div className="pt-3 mt-auto">
+        <div className="pt-2 mt-auto">
           <Link
-            to={`/products/product-details/${listing._id}`}
+            to={`/product-details/${listing._id}`}
             className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
             aria-label={`View details of ${listing.name}`}
           >

@@ -8,11 +8,10 @@ export default function PetsPage() {
   const [listings, setListings] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const { loading } = useContext(AuthContext);
 
   // Fetch listings from server
   useEffect(() => {
-    fetch("https://pawmart-server-nine.vercel.app/products")
+    fetch("https://pawmart-server-gamma.vercel.app/products")
       .then((res) => res.json())
       .then((data) => setListings(data))
       .catch((err) => console.error(err));
@@ -29,8 +28,6 @@ export default function PetsPage() {
       : true;
     return matchesSearch && matchesCategory;
   });
-
-  if (loading) return <LoadingSkeleton count={6} />;
 
   return (
     <div className="min-h-screen  p-6 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800">

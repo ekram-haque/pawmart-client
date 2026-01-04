@@ -13,7 +13,7 @@ const MyOrders = () => {
   useEffect(() => {
     if (user?.email) {
       fetch(
-        `https://pawmart-server-nine.vercel.app/my-orders?email=${user.email}`
+        `https://pawmart-server-gamma.vercel.app/my-orders?email=${user.email}`
       )
         .then((res) => res.json())
         .then((data) => setOrders(data))
@@ -56,7 +56,6 @@ const MyOrders = () => {
     doc.save("my-orders.pdf");
     toast.success("✅ PDF Downloaded Successfully!");
   };
-  if (loading) return <LoadingSkeleton count={6} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 py-12 px-6">

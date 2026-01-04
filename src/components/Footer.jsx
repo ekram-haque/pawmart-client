@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
-import logo from "../assets/logo.png";
+import logo from "/logo.png";
 import Container from "./MyContainer";
 import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 
