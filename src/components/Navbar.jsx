@@ -9,141 +9,166 @@ const Navbar = () => {
   const { user, logout, setUser } = useContext(AuthContext);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
-  const handlelogout = () => {
+  const handleLogout = () => {
     logout()
-      .then(() => {
-        setUser(null);
-      })
-      .catch((error) => {
-        console.log("Logout Error:", error);
-      });
+      .then(() => setUser(null))
+      .catch((error) => console.log("Logout Error:", error));
   };
 
   useEffect(() => {
-    const html = document.querySelector("html");
-    html.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const handleTheme = (checked) => {
-    setTheme(checked ? "dark" : "light");
-  };
-
   return (
-    <div className="shadow-md sticky top-0 z-50 backdrop-blur-md bg-opacity-80 bg-white dark:bg-black transition-colors duration-300">
+    <header
+      className="
+      sticky top-0 z-50
+      backdrop-blur-md bg-linear-to-r from-purple-50 to-pink-50 dark:from-purple-600 dark:to-pink-600
+      border-b border-gray-200 dark:border-gray-700
+      transition-colors p-3
+    "
+    >
       <MyContainer>
         <div className="navbar">
-          {/* Navbar Start */}
-          <div className="navbar-start flex items-center">
+          {/* LEFT */}
+          <div className="navbar-start gap-2">
+            {/* Mobile Menu */}
             <div className="dropdown">
-              <div tabIndex={0} className="btn btn-ghost lg:hidden">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h8m-8 6h16"
-                  />
-                </svg>
-              </div>
+              <label tabIndex={0} className="btn btn-ghost lg:hidden">
+                ☰
+              </label>
               <ul
-                tabIndex="-1"
-                className="menu menu-sm dropdown-content bg-base-100 dark:bg-gray-900 rounded-box z-50 mt-3 w-52 p-2 shadow"
+                tabIndex={0}
+                className="menu menu-sm dropdown-content mt-3 p-3 shadow rounded-xl
+                bg-white dark:bg-gray-900 w-52"
               >
-                <li>
-                  <MyLink to="/">Home</MyLink>
-                </li>
-                <li>
-                  <MyLink to="/pet-supplies">Pet & Supplies</MyLink>
-                </li>
-                <li>
-                  <MyLink to="/blog">Blog</MyLink>
-                </li>
-                <li>
-                  {user && (
-                    <MyLink to="/add-listing">Add Listing Page</MyLink>
-                  )}
-                </li>
-                <li>
-                  {user && (
-                    <MyLink to="/My-listing-page">My Listing Page</MyLink>
-                  )}
-                </li>
-                <li>{user && <MyLink to="/My-orders">My Orders</MyLink>}</li>
-                <li>{user && <MyLink to="/profile">Profile</MyLink>}</li>
+                <MyLink to="/">Home</MyLink>
+                <MyLink to="/pet-supplies">Pet & Supplies</MyLink>
+                <MyLink to="/blog">Blog</MyLink>
+                <MyLink to="/about">About</MyLink>
+                <MyLink to="/contact">Contact</MyLink>
               </ul>
             </div>
-            <Link to={"/home"}>
-              <img
-                src={logo}
-                alt="Logo"
-                className="w-20 h-20 dark:bg-white rounded-full"
-              />
+
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logo} alt="Logo" className="w-12 h-12 rounded-full" />
+              <span className="font-bold text-lg text-gray-800 dark:text-white hidden sm:block">
+                PetCare
+              </span>
             </Link>
           </div>
 
-          {/* Navbar Center */}
+          {/* CENTER */}
           <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
-              <li>
-                <MyLink to="/">Home</MyLink>
-              </li>
-              <li>
-                <MyLink to="/pet-supplies">Pet & Supplies</MyLink>
-              </li>
-              <li>
-                <MyLink to="/blog">Blog</MyLink>
-              </li>
-              <li>
-                {user && (
-                  <MyLink to="/add-listing">Add Listing Page</MyLink>
-                )}
-              </li>
-              <li>
-                {user && <MyLink to="/My-listing-page">My Listing Page</MyLink>}
-              </li>
-             
-              <li>{user && <MyLink to="/My-orders">My Orders</MyLink>}</li>
-              <li>{user && <MyLink to="/profile">Profile</MyLink>}</li>
+            <ul className="menu menu-horizontal gap-1 font-medium">
+              <MyLink to="/">Home</MyLink>
+              <MyLink to="/pet-supplies">Pet & Supplies</MyLink>
+              <MyLink to="/blog">Blog</MyLink>
+              <MyLink to="/about">About</MyLink>
+              <MyLink to="/contact">Contact</MyLink>
             </ul>
           </div>
 
-          {/* Navbar End */}
-          <div className="navbar-end flex items-center gap-4">
-            {/* Dark Mode Toggle */}
+          {/* RIGHT */}
+          {/* RIGHT */}
+          <div className="navbar-end gap-4">
+            {/* Theme Toggle */}
             <input
               type="checkbox"
-              className="toggle"
-              onChange={(e) => handleTheme(e.target.checked)}
+              className="toggle toggle-sm"
               checked={theme === "dark"}
+              onChange={(e) => setTheme(e.target.checked ? "dark" : "light")}
             />
 
-            {/* Login Button */}
-            {user ? (
-              <button
-                onClick={handlelogout}
-                className="px-5 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800 dark:to-pink-700 rounded-md font-semibold hover:opacity-70 transition duration-300 shadow-md"
-              >
-                Logout
-              </button>
-            ) : (
-              <MyLink
+            {/* AUTH UI */}
+            {!user ? (
+              <Link
                 to="/login"
-                className="px-5 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-800 dark:to-pink-700 rounded-md font-semibold hover:opacity-70 transition duration-300 shadow-md"
+                className="px-4 py-2 rounded-md font-semibold text-white
+      bg-gradient-to-r from-purple-600 to-pink-600
+      hover:opacity-60 transition shadow"
               >
                 Login
-              </MyLink>
+              </Link>
+            ) : (
+              <div className="dropdown dropdown-end ">
+                <label tabIndex={0} className="  avatar">
+                  <div className="w-10 rounded-full ring ring-purple-500 ring-offset-2">
+                    <img src={user.photoURL || "/avatar.png"} alt="User" />
+                  </div>
+                </label>
+
+                <ul
+                  tabIndex={0}
+                  className="menu dropdown-content mt-3 p-3 shadow-lg rounded-xl
+        bg-white dark:bg-gray-900 w-52"
+                >
+                  <MyLink to="/dashboard">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="my-1.5 inline-block size-4"
+                    >
+                      <rect x="3" y="3" width="7" height="9" />
+                      <rect x="14" y="3" width="7" height="5" />
+                      <rect x="14" y="12" width="7" height="9" />
+                      <rect x="3" y="14" width="7" height="7" />
+                    </svg>
+                    <span className="ml-3">Dashboard</span>
+                  </MyLink>
+                  <MyLink to="/profile">
+                    {/* User SVG */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="my-1.5 inline-block size-4"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span className="ml-3">Profile</span>
+                  </MyLink>
+
+                  <Link
+                    className="px-3 py-1 text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400"
+                    onClick={handleLogout}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="my-1.5 inline-block size-4"
+                    >
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <path d="M16 17l5-5-5-5" />
+                      <path d="M21 12H9" />
+                    </svg>
+
+                    <span className="ml-3">Logout</span>
+                  </Link>
+                </ul>
+              </div>
             )}
           </div>
         </div>
       </MyContainer>
-    </div>
+    </header>
   );
 };
 

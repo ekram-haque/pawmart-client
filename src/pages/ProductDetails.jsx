@@ -1,28 +1,32 @@
-import React, { useState, useContext, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { useLoaderData, useParams } from "react-router";
+import React, { useState, useEffect, useContext } from "react";
+import { useLoaderData, Link } from "react-router";
 import { AuthContext } from "../context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { motion } from "framer-motion";
 
-const ProductDetails = () => {
-  const id = useParams();
-
-   // Fetch listings from server
-    useEffect(() => {
-      fetch(`https://pawmart-server-nine.vercel.app/products/product-details/${id}`) 
-        .then(res => res.json())
-        
-    }, [id]);
-
+const ListingDetailsPage = () => {
   const product = useLoaderData();
   const { user } = useContext(AuthContext);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
   const [formData, setFormData] = useState({
     address: "",
     date: "",
     phone: "",
     notes: "",
   });
+
+  const isOwner = user?.email === product.email;
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = showModal ? "hidden" : "auto";
+  }, [showModal]);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,7 +36,7 @@ const ProductDetails = () => {
 
     const orderData = {
       buyerName: user?.displayName || "Anonymous User",
-      buyerEmail: user?.email, // backend GET /my-orders এ email check হবে
+      buyerEmail: user?.email,
       productId: product._id,
       productName: product.name,
       price: product.price || 0,
@@ -42,7 +46,6 @@ const ProductDetails = () => {
       notes: formData.notes,
     };
 
-    // POST request to save order in MongoDB
     fetch("https://pawmart-server-nine.vercel.app/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,70 +53,202 @@ const ProductDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("✅ Order saved:", data);
         toast.success("🎉 Order placed successfully!");
-
-        // Reset form and close modal
         setShowModal(false);
         setFormData({ address: "", date: "", phone: "", notes: "" });
       })
       .catch((err) => {
-        console.error("❌ Failed to save order:", err);
-        toast.error("Failed to place order!");
+        console.error(err);
+        toast.error("❌ Failed to place order!");
       });
   };
+  useEffect(() => {
+    fetch(
+      `http://localhost:5000/related/${encodeURIComponent(product.category)}/${
+        product._id
+      }`
+    )
+      .then((res) => res.json())
+      .then((data) => setRelatedProducts(data))
+      .catch((err) => console.error("Failed to fetch related products", err));
+  }, [product.category, product._id]);
 
-  const isOwner = user?.email === product.email;
+  const images = Array(5).fill(product.image);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-10 px-4">
-      <Toaster position="top-center" />
-      <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden">
-        {/* Image Section */}
-        <div className="w-full h-96 overflow-hidden">
-          <img
-            src={product.image || "https://via.placeholder.com/600x400"}
-            alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-          />
-        </div>
+    <div className="container mx-auto px-4 py-10 space-y-12">
+      {/* ================= IMAGE SLIDER ================= */}
+      <section>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          slidesPerView={1}
+          spaceBetween={20}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          loop
+          className="rounded-2xl"
+        >
+          {images.map((img, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={img}
+                alt="Product"
+                className="w-full h-96 object-cover rounded-2xl"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
 
-        {/* Product Info */}
-        <div className="p-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+      {/* ================= OVERVIEW ================= */}
+      <section className="space-y-4">
+        <div className="flex justify-between items-center ">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
             {product.name}
           </h1>
-
-          <p className="text-gray-600 dark:text-gray-300 mb-1">
-            <span className="font-semibold">Category:</span> {product.category}
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 mb-1">
-            <span className="font-semibold">Location:</span> {product.location}
-          </p>
-          <p className="text-gray-800 dark:text-gray-200 text-2xl font-semibold mb-4">
-            {product.price ? `$${product.price}` : "Free for Adoption"}
-          </p>
-
-          <p className="text-gray-700 dark:text-gray-300 mb-6">
-            {product.description || "No description available."}
-          </p>
-
-          {/* Contact / Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {/* Show Adopt / Order button only if user isn't the owner */}
-            {!isOwner && (
-              <button
-                onClick={() => setShowModal(true)}
-                className="flex-1 text-center px-4 py-3 border bg-purple-600 text-white  rounded-lg hover:bg-purple-700 dark:hover:bg-gray-700 transition"
-              >
-                🛒 Adopt / Order Now
-              </button>
-            )}
-          </div>
+          <button className="px-7 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg shadow-lg hover:scale-105 transform transition">
+            {product.price && product.price > 0 ? `$${product.price}` : "Free"}
+          </button>
         </div>
-      </div>
+        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+          {product.description}
+        </p>
+      </section>
 
-      {/* 🧾 Modal */}
+      {/* ================= KEY INFORMATION ================= */}
+      <section className="grid md:grid-cols-3 gap-6">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-lg transition">
+          <h3 className="font-semibold mb-3">📌 Basic Info</h3>
+          <ul className="space-y-2 text-sm">
+            <li>Category: {product.category}</li>
+            <li>location: {product.location}</li>
+            <li>create date: {product.date}</li>
+            <li>Status: {product.status}</li>
+          </ul>
+        </div>
+
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-lg transition">
+          <h3 className="font-semibold mb-3">📜 Rules</h3>
+          <ul className="list-disc list-inside text-sm space-y-1">
+            <li>No illegal usage</li>
+            <li>Return within 7 days</li>
+            <li>Valid ID required</li>
+          </ul>
+        </div>
+
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-lg transition">
+          <h3 className="font-semibold mb-3">⭐ Rating</h3>
+          <p className="text-2xl font-bold">{product.rating || "0"} / 5</p>
+        </div>
+      </section>
+
+      {/* ================= ORDER BUTTON ================= */}
+      {!isOwner && (
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg shadow-lg hover:scale-105 transform transition"
+          >
+            🛒 Adopt / Order Now
+          </button>
+        </div>
+      )}
+
+      {/* ================= REVIEWS ================= */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold">Reviews</h2>
+        {product.reviews?.length > 0 ? (
+          product.reviews.map((review, idx) => (
+            <div
+              key={idx}
+              className="bg-white dark:bg-gray-900 p-5 rounded-xl shadow hover:shadow-lg transition"
+            >
+              <h4 className="font-semibold">{review.user}</h4>
+              <p className="text-sm text-gray-500">{review.comment}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500">No reviews yet.</p>
+        )}
+      </section>
+
+      {/* ================= RELATED ITEMS ================= */}
+      <section>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Related Listings</h2>
+          <Link
+            to={`/products/category/${product.category}`}
+            className="text-purple-600 font-medium"
+          >
+            View All
+          </Link>
+        </div>
+
+        {relatedProducts.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedProducts.map((item) => (
+              <motion.article
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                className=" bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/3] m-4 bg-gray-100 dark:bg-gray-800">
+                  <img
+                    src={item.image || "https://via.placeholder.com/400"}
+                    alt={item.name}
+                    className="w-full rounded-lg h-full object-cover"
+                    loading="lazy"
+                  />
+
+                  {/* Category Badge */}
+                  <span className=" absolute top-3 right-3 bg-linear-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full text-xs font-semibold text-white shadow ">
+                    {item.category}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className=" p-4 flex flex-col gap-3 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 ">
+                  {/* Title */}
+                  <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
+                    {item.name}
+                  </h2>
+
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                    {item.description}
+                  </p>
+                  {/* Location */}
+                  <p className=" flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                    📍 {item.location}
+                  </p>
+
+                  {/* Price */}
+                  <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {item.price ? `$${item.price}` : "Free Adoption"}
+                  </p>
+                  {/* Action */}
+                  <div className="pt-3 mt-auto">
+                    <Link
+                      to={`/products/product-details/${item._id}`}
+                      className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      aria-label={`View details of ${item.name}`}
+                    >
+                      View details
+                    </Link>
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No related products found.</p>
+        )}
+      </section>
+
+      {/* ================= ORDER MODAL ================= */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 animate-fadeIn">
           <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 relative animate-slideUp">
@@ -122,7 +257,6 @@ const ProductDetails = () => {
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Buyer Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Buyer Name
@@ -135,7 +269,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Email
@@ -148,7 +281,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Listing Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Product / Listing
@@ -161,7 +293,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Price */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Price ($)
@@ -174,7 +305,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Address
@@ -190,7 +320,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Date */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Pick-up Date
@@ -205,7 +334,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Phone */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Phone
@@ -221,7 +349,6 @@ const ProductDetails = () => {
                 />
               </div>
 
-              {/* Notes */}
               <div>
                 <label className="block text-sm font-medium text-gray-600">
                   Additional Notes
@@ -258,4 +385,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default ListingDetailsPage;

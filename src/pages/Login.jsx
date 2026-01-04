@@ -7,25 +7,6 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const saveUserToDB = async (user) => {
-    const userInfo = {
-      name: user.displayName || "No name",
-      email: user.email,
-      photoURL: user.photoURL || "",
-      bio: "",
-      location: "",
-    };
-
-    await fetch(
-      `https://pawmart-server-nine.vercel.app/user/update-profile/${user.email}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userInfo),
-      }
-    );
-  };
-
   // //////////////////////////////////////////////////
 
   const { signInWithEmailAndPasswordfunc, signInWithPopupfunc } =
@@ -55,8 +36,8 @@ export default function LoginPage() {
   const handleGoogleSignIn = () => {
     signInWithPopupfunc()
       .then((result) => {
-        const user = result.user;
-        saveUserToDB(user);
+        result.user;
+
         console.log(result.user);
         navigate(location?.state?.from?.pathname || "/");
       })

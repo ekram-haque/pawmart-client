@@ -86,7 +86,7 @@ const MyListings = () => {
 
       <div className="overflow-x-auto">
         <table className="table w-full rounded-xl">
-          <thead className="bg-purple-100">
+          <thead className="bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 transition duration-300 ">
             <tr>
               <th>#</th>
               <th>Image</th>

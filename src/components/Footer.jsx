@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import logo from "../assets/logo.png";
 import Container from "./MyContainer";
-import {  FaYoutube, FaFacebook } from "react-icons/fa";
-import { SiX } from "react-icons/si";
+import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -38,41 +37,62 @@ const Footer = () => {
               <h3 className="text-lg font-semibold mb-3 border-b border-purple-400 dark:border-purple-500 inline-block pb-1">
                 Quick Links
               </h3>
-              <ul className="space-y-2 mt-4">
-                {["Home", "Blog", "Food", "Accessories"].map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="hover:text-purple-500 dark:hover:text-purple-400 transition font-medium"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+              <ul className="space-y-2 mt-4 ">
+                <li>
+                  <a href="/home" className="hover:underline">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="/about" className="hover:underline">
+                    about
+                  </a>
+                </li>
+                <li>
+                  <a href="/pet-supplies" className="hover:underline">
+                    All supplies
+                  </a>
+                </li>
+                <li>
+                  <a href="/blog" className="hover:underline">
+                    Blog
+                  </a>
+                </li>
               </ul>
             </div>
-
             {/* Social Links */}
-            <div>
-              <h3 className="text-lg font-semibold mb-3 border-b border-purple-400 dark:border-purple-500 inline-block pb-1">
+            <div className="flex flex-col items-center">
+              <h3 className="text-lg font-semibold mb-4 border-b border-purple-400 dark:border-purple-500 pb-1">
                 Follow Us
               </h3>
-              <div className="flex justify-center md:justify-start gap-5 mt-5">
+
+              <div className="flex items-center justify-center gap-6 mt-3">
+                {/* LinkedIn */}
                 <a
-                  href="#"
-                  className="hover:scale-110 transition text-black dark:text-white"
+                  href="https://www.linkedin.com/in/ekram-haque/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform text-black dark:text-white"
                 >
-                  <SiX size={26} />
+                  <FaLinkedin size={26} />
                 </a>
+
+                {/* GitHub */}
                 <a
-                  href="#"
-                  className="hover:scale-110 transition text-black dark:text-white"
+                  href="https://github.com/ekram-haque"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform text-black dark:text-white"
                 >
-                  <FaYoutube size={26} />
+                  <FaGithub size={26} />
                 </a>
+
+                {/* Facebook */}
                 <a
-                  href="#"
-                  className="hover:scale-110 transition text-black dark:text-white"
+                  href="https://facebook.com/ekramm.haque"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-110 transition-transform text-black dark:text-white"
                 >
                   <FaFacebook size={26} />
                 </a>

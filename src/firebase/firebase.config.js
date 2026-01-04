@@ -11,7 +11,7 @@ const firebaseConfig = {
   projectId: "pawmart-client-9b327",
   storageBucket: "pawmart-client-9b327.firebasestorage.app",
   messagingSenderId: "127777180062",
-  appId: "1:127777180062:web:557dd42bde266425c16e8f"
+  appId: "1:127777180062:web:557dd42bde266425c16e8f",
 };
 
 // Initialize Firebase

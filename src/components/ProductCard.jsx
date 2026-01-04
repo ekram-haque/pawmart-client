@@ -3,46 +3,60 @@ import React from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 
-export default function ListingCard({ listing }) {
+export default function ProductCard({ listing }) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
-      initial={{ opacity: 0, y: 20 }}
+    <motion.article
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className=" bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
     >
-      <div className="relative w-full h-48 overflow-hidden">
+      {/* Image */}
+      <div className="relative aspect-[4/3] m-4 bg-gray-100 dark:bg-gray-800">
         <img
-          src={listing.image || "https://via.placeholder.com/300"}
+          src={listing.image || "https://via.placeholder.com/400"}
           alt={listing.name}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          className="w-full rounded-lg h-full object-cover"
+          loading="lazy"
         />
+
+        {/* Category Badge */}
+        <span className=" absolute top-3 right-3 bg-linear-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full text-xs font-semibold text-white shadow ">
+          {listing.category}
+        </span>
       </div>
 
-      <div className="p-4 w-full flex flex-col justify-between h-36">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-            {listing.name}
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {listing.category} | {listing.location}
-          </p>
-        </div>
+      {/* Content */}
+      <div className=" p-4 flex flex-col gap-3 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 ">
+        {/* Title */}
+        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
+          {listing.name}
+        </h2>
 
-        <div className="flex justify-between items-center mt-4">
-          <p className="text-indigo-600 font-bold">
-            {listing.price ? `$${listing.price}` : "Free"}
-          </p>
+        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+          {listing.description}
+        </p>
+        {/* Location */}
+        <p className=" flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+          📍 {listing.location}
+        </p>
+
+        {/* Price */}
+        <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          {listing.price ? `$${listing.price}` : "Free Adoption"}
+        </p>
+        {/* Action */}
+        <div className="pt-3 mt-auto">
           <Link
             to={`/products/product-details/${listing._id}`}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition"
+            className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+            aria-label={`View details of ${listing.name}`}
           >
-            See Details
+            View details
           </Link>
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
 }

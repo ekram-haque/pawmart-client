@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { FadeLoader } from "react-spinners"; // npm i react-spinners
-import ListingCard from "../../ProductCard";
+import ProductCard from "../../ProductCard";
 
 const CategoryProducts = () => {
   const { category } = useParams();
@@ -11,11 +11,10 @@ const CategoryProducts = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch(
-      `https://pawmart-server-nine.vercel.app/products/category-filtered-product/${category}`
-    )
+    fetch(`http://localhost:5000/products/category-product/${category}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setProducts(data);
         setLoading(false);
       })
@@ -46,39 +45,61 @@ const CategoryProducts = () => {
         Products in "{category}" category
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-11/12 mx-auto">
         {products.map((p) => (
-          <motion.div
-            key={p._id}
-            className="border rounded-lg shadow hover:shadow-lg overflow-hidden bg-white dark:bg-gray-800 transition"
-            whileHover={{ scale: 1.05 }}
-            initial={{ opacity: 0, y: 20 }}
+          <motion.article
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            whileHover={{ y: -4 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className=" bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all"
           >
-            <img
-              src={p.image || "https://via.placeholder.com/300"}
-              alt={p.name}
-              className="w-full h-40 object-cover rounded-t-lg"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                {p.name}
-              </h3>
-              <p className="text-indigo-600 font-bold mt-1">
-                {p.price ? `$${p.price}` : "Free for Adoption"}
-              </p>
-              <p className="text-gray-500 text-sm mt-1">{p.location}</p>
+            {/* Image */}
+            <div className="relative aspect-[4/3] m-4 bg-gray-100 dark:bg-gray-800">
+              <img
+                src={p.image || "https://via.placeholder.com/400"}
+                alt={p.name}
+                className="w-full h-full rounded-xl object-cover"
+                loading="lazy"
+              />
 
-              {/* See Details Button */}
-              <Link
-                to={`/products/product-details/${p._id}`}
-                className="mt-3 inline-block w-full text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
-              >
-                See Details
-              </Link>
+              {/* Category Badge */}
+              <span className=" absolute top-3 right-3 bg-linear-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full text-xs font-semibold text-white shadow ">
+                {p.category}
+              </span>
             </div>
-          </motion.div>
+
+            {/* Content */}
+            <div className=" p-4 flex flex-col gap-3 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 ">
+              {/* Title */}
+              <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-purple-600 transition-colors">
+                {p.name}
+              </h2>
+
+              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
+                {p.description}
+              </p>
+              {/* Location */}
+              <p className=" flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                📍 {p.location}
+              </p>
+
+              {/* Price */}
+              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                {p.price ? `$${p.price}` : "Free Adoption"}
+              </p>
+              {/* Action */}
+              <div className="pt-3 mt-auto">
+                <Link
+                  to={`/products/product-details/${p._id}`}
+                  className=" block w-full text-center text-sm font-medium text-white bg-linear-to-r from-purple-600 to-pink-600 rounded-md py-2 hover:from-purple-700 hover:to-pink-700 hover:p-3 transition focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  aria-label={`View details of ${p.name}`}
+                >
+                  View details
+                </Link>
+              </div>
+            </div>
+          </motion.article>
         ))}
       </div>
     </div>

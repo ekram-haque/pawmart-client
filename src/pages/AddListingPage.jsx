@@ -46,7 +46,7 @@ const AddListing = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mt-10">
+    <div className="max-w-2xl mx-auto bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 p-6 rounded-lg shadow-lg ">
       <Toaster position="top-center" />
       <h2 className="text-2xl font-bold mb-5 text-center">
         🧺 Add New Listing
@@ -142,13 +142,13 @@ const AddListing = () => {
 
         {/* Owner Email */}
         <div>
-          <label className="block font-medium mb-1">Owner Email</label>
+          <label className="block font-medium mb-1 ">Owner Email</label>
           <input
             type="email"
             name="email"
             value={user?.email || ""}
             readOnly
-            className="w-full border p-2 rounded bg-gray-100"
+            className="w-full border p-2 rounded bg-gray-100 dark:bg-gray-800"
           />
         </div>
 

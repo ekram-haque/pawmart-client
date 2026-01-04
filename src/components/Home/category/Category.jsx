@@ -6,7 +6,7 @@ const categories = [
   {
     icon: <FaDog size={50} className="text-purple-600 dark:text-purple-400" />,
     
-    title: "Pets",
+    title: "pets",
     desc: "Find your perfect furry companion and give them a loving home.",
   },
   {
@@ -29,7 +29,7 @@ const categories = [
 
 const CategorySection = () => {
   return (
-    <div className="py-20 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <div className="w-11/12 mx-auto mb-20 rounded-lg py-20 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <div className="max-w-6xl mx-auto text-center px-4">
         {/* Section Header */}
         <h2 className="text-4xl font-bold text-purple-800 dark:text-pink-300 mb-3">
@@ -46,7 +46,7 @@ const CategorySection = () => {
               key={index}
               className="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700 p-6 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition duration-300"
             >
-              <Link to={`/products/category-filtered-product/${encodeURIComponent(item.title)}`} className="flex flex-col items-center text-center">
+              <Link to={`/products/category-product/${item.title}`} className="flex flex-col items-center text-center">
                 <div className="mb-4">{item.icon}</div>
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                   {item.title}

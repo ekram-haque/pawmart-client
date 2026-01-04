@@ -2,7 +2,7 @@ import React from "react";
 
 const WhyAdopt = () => {
   return (
-    <section className="py-25 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900 mb-25 transition duration-300">
+    <section className="w-11/12 mx-auto rounded-lg mb-20 py-25 bg-linear-to-r from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900  transition duration-300">
       <div className="max-w-7xl mx-auto text-center px-4">
         <div className="flex flex-col md:flex-row-reverse items-center justify-between gap-10 text-center md:text-left">
           
